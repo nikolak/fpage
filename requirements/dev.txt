@@ -1,0 +1,9 @@
+# Everything the developer needs in addition to the production requirements
+-r prod.txt
+
+# Testing
+nose
+Flask-Testing
+
+# Management script
+Flask-Script

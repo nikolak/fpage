@@ -34,3 +34,22 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+
+# Complexity
+output/*.html
+output/*/index.html
+
+# Sphinx
+docs/_build
+
+.webassets-cache
+
+# Virtualenvs
+env
+env*
+
+# PyCharm
+.idea
+
+# Database
+dev.db
