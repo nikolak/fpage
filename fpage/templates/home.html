@@ -16,38 +16,42 @@
                             <a href={{ post.url|safe }}>
                             {{ post.title|safe }}</a>
                         </h3>
-
-                        <div>
-                            <h6>
-                                <small><span class="glyphicon glyphicon-user"></span> <a href="#">nikola</a> <span
-                                        class="glyphicon glyphicon-time"></span> 15 Jan 2014
-                                </small>
-                            </h6>
-                        </div>
                     </div>
                     <div>
 
-                        <span id="{{post.id}}_ups">
-                            <a id="up_sub{{post.id}}"
-                               class="btn btn-success btn-sm glyphicon glyphicon-thumbs-up postbtns"
-                               href="#"
-                               onclick="javascript:vote('a#up_sub{{post.id}}', '{{post.id}}', 'up' );"> {{ post.ups
-                                }}</a>
-                        </span>
+                        <small>
+                            <span id="{{post.id}}_ups">
+                                <a id="up_sub{{post.id}}"
+                                   class="btn btn-success btn-sm glyphicon glyphicon-thumbs-up postbtns"
+                                   href="#"
+                                   onclick="javascript:vote('a#up_sub{{post.id}}', '{{post.id}}', 'up', 'a#down_sub{{post.id}}' );">
+                                    {{ post.ups
+                                    }}</a>
+                            </span>
 
 
-                        <span id="{{post.id}}_downs">
-                            <a id="down_sub{{post.id}}"
-                               class="btn btn-danger btn-sm glyphicon glyphicon-thumbs-down postbtns"
-                               href="#"
-                               onclick="javascript:vote('a#down_sub{{post.id}}', '{{post.id}}', 'down' );"> {{
-                                post.downs }}</a>
-                        </span>
+                            <span id="{{post.id}}_downs">
+                                <a id="down_sub{{post.id}}"
+                                   class="btn btn-danger btn-sm glyphicon glyphicon-thumbs-down postbtns"
+                                   href="#"
+                                   onclick="javascript:vote('a#down_sub{{post.id}}', '{{post.id}}', 'down', 'a#up_sub{{post.id}}' );">
+                                    {{
+                                    post.downs }}</a>
+                            </span>
 
-                        <span id="comments_{{post.id}}">
-                         <a id="sub_{{post.id}}_num_comments"
-                            class="btn btn-default btn-sm glyphicon glyphicon-comment postbtns"
-                            href="/comments/{{post.id}}"> 100</a>
+                            <span id="comments_{{post.id}}">
+                             <a id="sub_{{post.id}}_num_comments"
+                                class="btn btn-default btn-sm glyphicon glyphicon-comment postbtns"
+                                href="/comments/{{post.id}}"> 100</a>
+                            </span>
+                        </small>
+
+                        <span>
+                            <small style="position: relative; top: 0.25em;">
+                                <span class="glyphicon glyphicon-user"></span>
+                                <a href="#">nikola</a>
+                                <span class="glyphicon glyphicon-time"></span> 15 Jan 2014
+                            </small>
                         </span>
                     </div>
                 </div>

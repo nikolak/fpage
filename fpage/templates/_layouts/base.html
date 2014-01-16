@@ -30,14 +30,15 @@
     {% block css %}{% endblock %}
 
     <script>
-    function vote(sourceId, postId, voteDir) {
+    function vote(sourceId, postId, voteDir, otherId) {
         $.post('/vote', {
             cValue: $(sourceId).text(),
             postId: postId,
-            voteDir: voteDir
+            voteDir: voteDir,
+            otherValue:$(otherId).text()
         }).done(function(voted) {
             $(sourceId).text(voted['new_value'])
-            $(sourceId).show();
+            $(otherId).text(voted['other_value'])
         });
     }
 

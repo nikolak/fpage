@@ -51,9 +51,18 @@ def vote():
             else:
                 raise Exception
         db.session.commit()
-    except:
-        pass
 
-    new_value = " " + str(int(request.form['cValue']) + 1)
+        new_value = " " + str(int(request.form['cValue']) + 1)
+
+        if changing_vote:
+            other_value = " " + str(int(request.form['otherValue']) - 1)
+        else:
+            other_value = request.form['otherValue']
+    except:
+        return jsonify({
+            'new_value': request.form['cValue'],
+            'other_value': request.form['otherValue']})
+
     return jsonify({
-        'new_value': new_value})
+        'new_value': new_value,
+        'other_value': other_value})
