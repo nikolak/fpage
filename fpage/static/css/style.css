@@ -9,7 +9,7 @@ html {
 }
 
 body {
-  padding-top: 60px;
+  padding-top: 0px;
 }
 
 section {
@@ -23,6 +23,10 @@ textarea {
 .container-narrow{
   margin: 0 auto;
   max-width: 700px;
+}
+
+.btn .btn-default{
+  margin-left: 6px;
 }
 
 /* Forms */
@@ -83,4 +87,28 @@ footer .footer-nav {
   float: right;
   margin-right: 25px;
   list-style: none;
+}
+
+.nav > li > a {
+  padding-right: 25px;
+}
+
+/* Submission list*/
+
+.ui-group-buttons{display:inline-block;vertical-align:middle}
+.ui-group-buttons:after{content:".";display:block;height:0.25em;clear:both;visibility:hidden}
+.ui-group-buttons .btn{float:left;border-radius:0}
+.ui-group-buttons .btn:first-child{margin-left:0;border-top-left-radius:.25em;border-bottom-left-radius:.25em;padding-right:15px}
+.ui-group-buttons .btn:last-child{border-top-right-radius:.25em;border-bottom-right-radius:.25em;padding-left:15px}
+
+h3 {
+    margin-top: 0px;
+}
+
+.col-md-1 {
+    padding-right: 0px;
+}
+
+.postbtns{
+    border: 0px solid transparent;
 }

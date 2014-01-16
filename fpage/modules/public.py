@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 '''Public section, including homepage and signup.'''
 from flask import (Blueprint, request, render_template, flash, url_for,
-                    redirect, session)
+                   redirect, session, jsonify)
 from sqlalchemy.exc import IntegrityError
 
-from fpage.models import User
+from fpage.models import User, Submission
 from fpage.forms import RegisterForm, LoginForm
-from fpage.utils import flash_errors
+from fpage.utils import flash_errors, login_required
 from fpage.models import db
 
 blueprint = Blueprint('public', __name__,
@@ -16,6 +16,19 @@ blueprint = Blueprint('public', __name__,
 
 @blueprint.route("/", methods=["GET", "POST"])
 def home():
+    return render_template("home.html", posts=Submission.query.order_by(Submission.ups))
+
+
+@blueprint.route('/logout/')
+def logout():
+    session.pop('logged_in', None)
+    session.pop('username', None)
+    flash('You are logged out.', 'info')
+    return redirect(url_for('public.home'))
+
+
+@blueprint.route("/login/", methods=['GET', 'POST'])
+def login():
     form = LoginForm(request.form)
     if request.method == 'POST':
         u = User.query.filter_by(username=request.form['username']).first()
@@ -26,15 +39,9 @@ def home():
             session['logged_in'] = True
             session['username'] = u.username
             flash("You are logged in.", 'success')
-            return redirect(url_for("member.members"))
-    return render_template("home.html", form=form)
+            return redirect(url_for("public.home"))
+    return render_template("login.html", form=form)
 
-@blueprint.route('/logout/')
-def logout():
-    session.pop('logged_in', None)
-    session.pop('username', None)
-    flash('You are logged out.', 'info')
-    return redirect(url_for('public.home'))
 
 @blueprint.route("/register/", methods=['GET', 'POST'])
 def register():
@@ -60,3 +67,10 @@ def about():
 @blueprint.errorhandler(404)
 def page_not_found(e):
     return render_template("404.html"), 404
+
+    # @blueprint.route('/translate', methods = ['POST'])
+    # @login_required
+    # def translate():
+    #     print "translating"
+    #     return jsonify({
+    #         'text': "100"})

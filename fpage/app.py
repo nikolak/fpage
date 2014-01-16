@@ -26,7 +26,9 @@ def create_app(config_object):
     for name, bundle in assets_loader.load_bundles().iteritems():
         assets_env.register(name, bundle)
     # Register blueprints
-    from fpage.modules import public, member
+    from fpage.modules import public, voting, submit
+
     app.register_blueprint(public.blueprint)
-    app.register_blueprint(member.blueprint)
+    app.register_blueprint(voting.blueprint)
+    app.register_blueprint(submit.blueprint)
     return app
