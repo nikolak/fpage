@@ -23,7 +23,6 @@
                             <span id="{{post.id}}_ups">
                                 <a id="up_sub{{post.id}}"
                                    class="btn btn-success btn-sm glyphicon glyphicon-thumbs-up postbtns"
-                                   href="#"
                                    onclick="javascript:vote('a#up_sub{{post.id}}', '{{post.id}}', 'up', 'a#down_sub{{post.id}}' );">
                                     {{ post.ups
                                     }}</a>
@@ -33,7 +32,6 @@
                             <span id="{{post.id}}_downs">
                                 <a id="down_sub{{post.id}}"
                                    class="btn btn-danger btn-sm glyphicon glyphicon-thumbs-down postbtns"
-                                   href="#"
                                    onclick="javascript:vote('a#down_sub{{post.id}}', '{{post.id}}', 'down', 'a#up_sub{{post.id}}' );">
                                     {{
                                     post.downs }}</a>
