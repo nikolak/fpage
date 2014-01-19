@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-'''Members-only module, typically including the app itself.
-'''
+
 from flask import Blueprint, jsonify, request, session
 from fpage.utils import login_required
 from fpage.models import Vote, Submission

@@ -1,22 +1,22 @@
 # -*- coding: utf-8 -*-
 '''Public section, including homepage and signup.'''
 from flask import (Blueprint, request, render_template, flash, url_for,
-                   redirect, session, jsonify)
+                   redirect, session )
 from sqlalchemy.exc import IntegrityError
 
 from fpage.models import User, Submission
 from fpage.forms import RegisterForm, LoginForm
-from fpage.utils import flash_errors, login_required
+from fpage.utils import flash_errors
 from fpage.models import db
 
 blueprint = Blueprint('public', __name__,
-                        static_folder="../static",
-                        template_folder="../templates")
+                      static_folder="../static",
+                      template_folder="../templates")
 
 
 @blueprint.route("/", methods=["GET", "POST"])
 def home():
-    return render_template("home.html", posts=Submission.query.order_by(Submission.ups))
+    return render_template("page.html", posts=Submission.query.order_by(Submission.ups))
 
 
 @blueprint.route('/logout/')
@@ -59,18 +59,13 @@ def register():
         flash_errors(form)
     return render_template('register.html', form=form)
 
+
 @blueprint.route("/about/")
 def about():
     form = LoginForm(request.form)
     return render_template("about.html", form=form)
 
+
 @blueprint.errorhandler(404)
 def page_not_found(e):
     return render_template("404.html"), 404
-
-    # @blueprint.route('/translate', methods = ['POST'])
-    # @login_required
-    # def translate():
-    #     print "translating"
-    #     return jsonify({
-    #         'text': "100"})

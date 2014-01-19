@@ -13,8 +13,8 @@
                 <div class="col-xs-10 col-md-11">
                     <div>
                         <h3>
-                            <a href={{ post.url|safe }}>
-                            {{ post.title|safe }}</a>
+                            <a href="{{post.url|safe}}">
+                                {{ post.title|safe }}</a>
                         </h3>
                     </div>
                     <div>
@@ -46,9 +46,10 @@
 
                         <span>
                             <small style="position: relative; top: 0.25em;">
-                                <span class="glyphicon glyphicon-user"></span>
-                                <a href="#">nikola</a>
-                                <span class="glyphicon glyphicon-time"></span> 15 Jan 2014
+                                <span class="glyphicon glyphicon-user"> </span>
+                                {{post.author.username}}
+                                <span class="glyphicon glyphicon-time" style="padding-left: 10px;"> </span>
+                                {{post.timestamp}}
                             </small>
                         </span>
                     </div>
@@ -57,6 +58,24 @@
         </li>
         {% endfor %}
     </ul>
+
+    <ul class="pager">
+        {% if page==1 %}
+        <li class="disabled"><a>Previous</a></li>
+        {%elif page==2%}
+        <li><a href="/">Previous</a></li>
+        {%else%}
+        <li><a href="/page/{{page-1}}">Previous</a></li>
+        {%endif%}
+
+        {% if posts|count <25 %}
+        <li class="disabled"><a>Next</a></li>
+        {%else%}
+        <li><a href="/page/{{page+1}}">Next</a></li>
+        {%endif%}
+
+    </ul>
+
 </div>
 
 {% endblock %}

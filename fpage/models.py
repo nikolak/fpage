@@ -3,14 +3,16 @@
 """
 flaskPage models.
 """
-from flask.ext.sqlalchemy import SQLAlchemy
 from passlib.apps import custom_app_context as pwd_context
+
+from flask.ext.sqlalchemy import SQLAlchemy
+
 
 db = SQLAlchemy()
 
-class User(db.Model):
 
-    __tablename__ = 'users'
+class User(db.Model):
+    __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(80), unique=False, nullable=True)
@@ -39,14 +41,13 @@ class Submission(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(140), unique=False, nullable=False)
     url = db.Column(db.String(399), unique=False, nullable=True)
-    ups = db.Column(db.Integer)
-    downs = db.Column(db.Integer)
-
-    def __init__(self, title=None, url=None, ups=1, downs=0):
-        self.title = title
-        self.ups = ups
-        self.downs = downs
-        self.url = id if url is None else url
+    ups = db.Column(db.Integer, default=1)
+    downs = db.Column(db.Integer, default=0)
+    # comments=db.Column(db.Integer, default=0)
+    # self_text=db.Column(db.String(5000), default=None)
+    timestamp = db.Column(db.Integer, nullable=False)
+    author_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    author = db.relationship(User)
 
     def __repr__(self):
         return '<Submission {id} "{title}"'.format(id=self.id, title=self.title)
@@ -67,4 +68,3 @@ class Vote(db.Model):
 
     def __repr__(self):
         return "<Vote {vote_id} by {vote_user}".format(vote_id=self.id, vote_user=self.user)
-

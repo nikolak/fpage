@@ -1,0 +1,19 @@
+{% extends "_layouts/base.html" %}
+{% block content %}
+<div class="container-narrow">
+    <h1>Submit</h1>
+    <br/>
+
+    <form class="form form-register" method="POST" action="">
+        <div class="form-group">
+            {{form.title.label}}
+            {{form.title(placeholder="Submission Title", class_="form-control")}}
+        </div>
+        <div class="form-group">
+            {{form.url.label}}
+            {{form.url(placeholder="Submission URL", class_="form-control")}}
+        </div>
+        <p><input class="btn btn-default btn-submit" type="submit" value="Submit"></p>
+    </form>
+</div>
+{% endblock %}

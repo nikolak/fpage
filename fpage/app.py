@@ -10,6 +10,7 @@ from fpage.models import db
 
 assets_env = Environment()
 
+
 def create_app(config_object):
     '''An application factory, as explained here:
         http://flask.pocoo.org/docs/patterns/appfactories/
@@ -25,10 +26,13 @@ def create_app(config_object):
     assets_loader = PythonLoader(assets)
     for name, bundle in assets_loader.load_bundles().iteritems():
         assets_env.register(name, bundle)
-    # Register blueprints
-    from fpage.modules import public, voting, submit
+        # Register blueprints
+    from fpage.modules import page, voting, submit, public, populate
 
-    app.register_blueprint(public.blueprint)
+    app.register_blueprint(page.blueprint)
     app.register_blueprint(voting.blueprint)
     app.register_blueprint(submit.blueprint)
+    app.register_blueprint(public.blueprint)
+
+    app.register_blueprint(populate.blueprint)
     return app

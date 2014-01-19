@@ -2,7 +2,7 @@
 flaskPage
 ===============================
 
-HN/reddit like site using flask
+Social news (HN/reddit-like) site made with Python and flask
 
 
 Quickstart
