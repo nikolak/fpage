@@ -3,14 +3,15 @@
 import os
 import sys
 import subprocess
+
 from flask.ext.script import Manager, Shell, Server
 from fpage import models
 from fpage.app import create_app
 from fpage.models import db
 
-env = os.environ.get("FPAGE_ENV", 'dev') # dev default
-app = create_app("fpage.settings.{0}Config"
-.format(env.capitalize()))
+
+env = os.environ.get("FPAGE_ENV", 'dev')  # dev default
+app = create_app("fpage.settings.{0}Config".format(env.capitalize()))
 
 manager = Manager(app)
 TEST_CMD = "nosetests"

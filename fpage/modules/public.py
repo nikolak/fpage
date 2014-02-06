@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
-'''Public section, including homepage and signup.'''
+
 from flask import (Blueprint, request, render_template, flash, url_for,
-                   redirect, session )
+                   redirect, session)
 from sqlalchemy.exc import IntegrityError
 
 from fpage.models import User, Submission
 from fpage.forms import RegisterForm, LoginForm
 from fpage.utils import flash_errors
 from fpage.models import db
+
 
 blueprint = Blueprint('public', __name__,
                       static_folder="../static",

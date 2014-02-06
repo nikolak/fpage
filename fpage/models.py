@@ -16,7 +16,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(80), unique=False, nullable=True)
-    password = db.Column(db.String, nullable=False)   # The hashed password
+    password = db.Column(db.String, nullable=False)  # The hashed password
 
     def __init__(self, username=None, email=None, password=None):
         self.username = username
@@ -34,8 +34,6 @@ class User(db.Model):
 
 
 class Submission(db.Model):
-    """docstring for Submission"""
-
     __tablename__ = 'submissions'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -43,11 +41,10 @@ class Submission(db.Model):
     url = db.Column(db.String(399), unique=False, nullable=True)
     ups = db.Column(db.Integer, default=1)
     downs = db.Column(db.Integer, default=0)
-    # comments=db.Column(db.Integer, default=0)
     # self_text=db.Column(db.String(5000), default=None)
     timestamp = db.Column(db.Integer, nullable=False)
-    author_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    author = db.relationship(User)
+    author = db.Column(db.String, nullable=False)
+    comment_count = db.Column(db.Integer, default=0)
 
     def __repr__(self):
         return '<Submission {id} "{title}"'.format(id=self.id, title=self.title)
@@ -61,10 +58,19 @@ class Vote(db.Model):
     user = db.Column(db.String, nullable=False)
     vote_value = db.Column(db.Integer)
 
-    def __init__(self, user, submission_id, vote_value):
-        self.user = user
-        self.submission_id = submission_id
-        self.vote_value = vote_value
+    def __repr__(self):
+        return "<Vote {vote_id} by {vote_user}>".format(vote_id=self.id, vote_user=self.user)
+
+
+class Comment(db.Model):
+    __tablename__ = 'user_comments'
+
+    id = db.Column(db.Integer, primary_key=True)
+    thread_id = db.Column(db.Integer, nullable=False)
+    author = db.Column(db.String, nullable=False)
+    content = db.Column(db.String, nullable=False)
+    ups = db.Column(db.Integer, default=1)
+    downs = db.Column(db.Integer, default=0)
 
     def __repr__(self):
-        return "<Vote {vote_id} by {vote_user}".format(vote_id=self.id, vote_user=self.user)
+        return "<Comment {} >".format(id)

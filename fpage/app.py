@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
-import os
 from flask import Flask
-from flask.ext.sqlalchemy import SQLAlchemy
-from flask.ext.assets import Environment
 from webassets.loaders import PythonLoader
 
+from flask.ext.assets import Environment
 from fpage import assets
 from fpage.models import db
+
 
 assets_env = Environment()
 
@@ -27,12 +26,14 @@ def create_app(config_object):
     for name, bundle in assets_loader.load_bundles().iteritems():
         assets_env.register(name, bundle)
         # Register blueprints
-    from fpage.modules import page, voting, submit, public, populate
+    from fpage.modules import page, voting, submit, public, populate, comments, user
 
     app.register_blueprint(page.blueprint)
     app.register_blueprint(voting.blueprint)
     app.register_blueprint(submit.blueprint)
     app.register_blueprint(public.blueprint)
+    app.register_blueprint(comments.blueprint)
+    app.register_blueprint(user.blueprint)
 
     app.register_blueprint(populate.blueprint)
     return app

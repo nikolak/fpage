@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-'''Members-only module, typically including the app itself.
-'''
-from flask import Blueprint, render_template, request, flash, session
+
 import time
+
+from flask import Blueprint, render_template, request, flash, session
 
 from fpage.utils import login_required
 from fpage.models import db, Submission, User
@@ -22,15 +22,13 @@ def submit():
 
     if form.validate_on_submit():
         user = User.query.filter_by(username=session['username']).first()
-        # print user
         if user is None:
             flash("Error getting user", 'warning')
         else:
-            # print form.title.data,form.url.data,user
             new_submission = Submission(title=form.title.data,
                                         url=form.url.data,
                                         timestamp=int(time.time()),
-                                        author=user)
+                                        author=user.username)
             try:
                 db.session.add(new_submission)
                 db.session.commit()

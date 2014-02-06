@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from flask import Blueprint, flash, render_template
+
 from fpage.models import Submission
+
 
 blueprint = Blueprint('page', __name__,
                       static_folder="../static",
@@ -9,16 +11,16 @@ blueprint = Blueprint('page', __name__,
 
 
 @blueprint.route("/", methods=['GET'])
-@blueprint.route('/page/<id>', methods=['GET'])
-def page(id=1):
+@blueprint.route('/page/<page_id>', methods=['GET'])
+def page(page_id=1):
     try:
-        id = int(id)
+        page_id = int(page_id)
     except ValueError:
         flash("Invalid page number", 'warning')
-        id = 1
+        page_id = 1
     return render_template("page.html",
-                           posts=Submission.query.order_by(Submission.ups.desc())[(id * 25) - 25:id * 25],
-                           page=int(id))
+                           posts=Submission.query.order_by(Submission.ups.desc())[(page_id * 25) - 25:page_id * 25],
+                           page=int(page_id))
 
 
     #
