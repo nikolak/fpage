@@ -42,7 +42,7 @@ class Submission(db.Model):
     ups = db.Column(db.Integer, default=1)
     downs = db.Column(db.Integer, default=0)
     # self_text=db.Column(db.String(5000), default=None)
-    timestamp = db.Column(db.Integer, nullable=False)
+    timestamp = db.Column(db.String, nullable=False)
     author = db.Column(db.String, nullable=False)
     comment_count = db.Column(db.Integer, default=0)
 

@@ -9,12 +9,10 @@ common_css = Bundle(
 )
 
 common_js = Bundle(
-    "libs/jquery2/jquery-2.0.3.min.js",
+    "libs/jquery2/jquery.js",
     "libs/bootstrap3/js/bootstrap.min.js",
     "js/plugins.js",
-    Bundle(
-        "js/script.js",
-        filters="jsmin"
-    ),
+    "js/script.js",
+    filters="jsmin",
     output="public/js/common.js"
 )

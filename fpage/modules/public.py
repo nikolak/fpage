@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from flask import (Blueprint, request, render_template, flash, url_for,
-                   redirect, session)
+                   redirect, session, jsonify)
 from sqlalchemy.exc import IntegrityError
 
 from fpage.models import User, Submission
@@ -35,12 +35,12 @@ def login():
         u = User.query.filter_by(username=request.form['username']).first()
         if u is None or not u.check_password(request.form['password']):
             error = 'Invalid username or password.'
-            flash(error, 'warning')
+            return jsonify({"response": "error"})
         else:
             session['logged_in'] = True
             session['username'] = u.username
             flash("You are logged in.", 'success')
-            return redirect(url_for("public.home"))
+            return jsonify({"response": "Logged in"})
     return render_template("login.html", form=form)
 
 

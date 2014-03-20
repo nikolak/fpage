@@ -13,7 +13,7 @@
 
     <title>{% block page_title %}
 
-        flaskPage
+        Flask
 
         {% endblock %}
     </title>
@@ -29,32 +29,100 @@
 
     {% block css %}{% endblock %}
 
-    <script>
-    function vote(sourceId, postId, voteDir, otherId) {
-        $.post('/vote', {
-            cValue: $(sourceId).text(),
-            postId: postId,
-            voteDir: voteDir,
-            otherValue:$(otherId).text()
-        }).done(function(voted) {
-            $(sourceId).text(voted['new_value'])
-            $(otherId).text(voted['other_value'])
-        });
-    }
-
-
-
-
-
-
-    </script>
 
 </head>
 <body class="{% block body_class %}{% endblock %}">
 {% block body %}
-{% with form=form %}
-{% include "_layouts/nav.html" %}
-{% endwith %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <nav class="navbar navbar-default" role="navigation">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse"
+                            data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">FP</a>
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="/">Home</a></li>
+                        <li><a href="/about">About</a></li>
+                        <li><a href="/submit">Submit</a></li>
+                    </ul>
+
+                    {% if session.logged_in %}
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span
+                                class="glyphicon glyphicon-envelope"></span> Inbox <span
+                                class="label label-info">5</span>
+                        </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#"><span class="label label-warning">4:00 AM</span>Comment reply</a></li>
+                                <li><a href="#"><span class="label label-warning">4:30 AM</span>Comment reply</a></li>
+                                <li><a href="#"><span class="label label-warning">5:00 AM</span>Comment reply</a></li>
+                                <li class="divider"></li>
+                                <li><a href="/inbox" class="text-center">View All</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span
+                                class="glyphicon glyphicon-user" style="margin-right: 5px;"></span>{{ session.username
+                            }} <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/user/{{session.username}}"><span class="glyphicon glyphicon-user"></span>
+                                    Profile</a></li>
+                                <li class="divider"></li>
+                                <li><a href="/logout"><span class="glyphicon glyphicon-off"></span> Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    {% else %}
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="/register">Sign Up</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sign in <b class="caret"></b></a>
+                            <ul class="dropdown-menu" style="padding: 15px;min-width: 250px;">
+                                <li>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <form class="form" accept-charset="UTF-8" id="login-nav" action="/login/">
+                                                <div class="form-group">
+                                                    <label class="sr-only" for="username">Username</label>
+                                                    <input type="text" class="form-control" id="username"
+                                                           placeholder="Username" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="sr-only" for="password">Password</label>
+                                                    <input type="password" class="form-control" id="password"
+                                                           placeholder="Password" required>
+                                                </div>
+                                                <div class="form-group" id="div_button">
+
+                                                </div>
+                                                <h6 id="login_response" class="text-center"></h6>
+                                                <a class="btn btn-success btn-block" id="sign_in">Sign in</a>
+
+                                            </form>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="divider"></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    {% endif %}
+                </div>
+                <!-- /.navbar-collapse -->
+            </nav>
+        </div>
+    </div>
+</div>
+
 
 <header>{% block header %}{% endblock %}</header>
 <div class="{% block content_class %}container{% endblock content_class %}">

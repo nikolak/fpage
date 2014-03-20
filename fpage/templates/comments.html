@@ -1,7 +1,7 @@
 {% extends "_layouts/base.html" %}
 
 {% block js %}
-<script type=text/javascript xmlns="http://www.w3.org/1999/html">
+<script>
     $(function() {
       $('button#submit').bind('click', function() {
         $.post('/comment/post', {
@@ -14,8 +14,6 @@
         return false;
       });
     });
-
-
 
 
 </script>
