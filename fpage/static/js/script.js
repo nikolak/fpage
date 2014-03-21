@@ -27,3 +27,22 @@
     $(document).ready(function() {
       $("abbr.timeago").timeago();
     });
+
+    function comment(comment_id, thread_id) {
+        $.post('/comment/post', {
+            parent_id: comment_id,
+            content: $("textarea#"+comment_id+"_content").val(),
+            thread_id: thread_id
+        }).done(function(data) {
+            $("h6#status_"+comment_id).text(data.response)
+        });
+    };
+
+    function show(elem_id)
+    {
+        document.getElementById(elem_id).removeAttribute("style");
+    }
+    function hide(elem_id)
+    {
+        document.getElementById(elem_id).style.display="none";
+    }
