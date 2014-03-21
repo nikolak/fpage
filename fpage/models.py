@@ -42,12 +42,27 @@ class Submission(db.Model):
     ups = db.Column(db.Integer, default=1)
     downs = db.Column(db.Integer, default=0)
     # self_text=db.Column(db.String(5000), default=None)
-    timestamp = db.Column(db.String, nullable=False)
+    timestamp = db.Column(db.String, nullable=False) #todo: change to sec since epoch and make a func that'll give proper format to js
     author = db.Column(db.String, nullable=False)
     comment_count = db.Column(db.Integer, default=0)
+    comments=db.relationship('Comment', backref='thread', lazy='dynamic')
+
+
+    def post_comment(self, author, content, parent_id=None):
+        if parent_id:
+            #todo: check if parent exists
+            comment=Comment(self.id, author.username, content, int(parent_id))
+        else:
+            comment=Comment(self.id, author.username, content)
+        db.session.add(comment)
+        db.session.commit()
+        return True
+
+    def get_comments(self):
+        return self.comments.filter_by(is_root=True).all()
 
     def __repr__(self):
-        return '<Submission {id} "{title}"'.format(id=self.id, title=self.title)
+        return '<Submission {id} "{title} >"'.format(id=self.id, title=self.title)
 
 
 class Vote(db.Model):
@@ -66,11 +81,25 @@ class Comment(db.Model):
     __tablename__ = 'user_comments'
 
     id = db.Column(db.Integer, primary_key=True)
-    thread_id = db.Column(db.Integer, nullable=False)
-    author = db.Column(db.String, nullable=False)
+    thread_id = db.Column(db.Integer, db.ForeignKey('submissions.id'))
+    author = db.Column(db.String, nullable=False) #todo: rel to author
     content = db.Column(db.String, nullable=False)
     ups = db.Column(db.Integer, default=1)
     downs = db.Column(db.Integer, default=0)
+    parent_id = db.Column(db.Integer, db.ForeignKey('user_comments.id'))
+    children=db.relationship('Comment', backref=db.backref('parent',
+                                            remote_side=[id]), lazy='dynamic')
+    is_root=db.Column(db.Boolean)
+
+    def __init__(self, thread_id, author, content, parent_id=None):
+        self.thread_id = thread_id
+        self.author = author
+        self.content = content
+        self.parent_id = parent_id
+        self.is_root=parent_id is None
+
+    def get_comments(self):
+        return self.children.all()
 
     def __repr__(self):
-        return "<Comment {} >".format(id)
+        return "<Comment {} >".format(self.id)

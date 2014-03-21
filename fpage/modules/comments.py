@@ -2,7 +2,7 @@
 
 from flask import Blueprint, flash, render_template, session, request, jsonify
 
-from fpage.models import Submission, Comment, db
+from fpage.models import Submission, Comment, db, User
 from fpage.forms import CommentForm
 from fpage.utils import flash_errors
 
@@ -22,54 +22,43 @@ def comments(thread_id):
     except ValueError:
         return render_template("404.html")
 
-    form = CommentForm(request.form, csrf_enabled=False)
-    if form.validate_on_submit():
-        if 'logged_in' not in session:
-            flash('You need to be logged in to post comments', 'warning')
-        else:
-            new_comment = Comment(thread_id=thread_id,
-                                  author=session['username'],
-                                  content=form.content.data)
-            try:
-                thread.comment_count += 1
-                db.session.add(new_comment)
-                db.session.commit()
-                form.content.data = ""
-            except:
-                flash("Error encountered while trying to post comment", 'warning')
-    else:
-        flash_errors(form)
-
+    # import pdb;pdb.set_trace()
     return render_template("comments.html",
                            post=thread,
-                           comments=Comment.query.filter_by(thread_id=thread_id),
-                           form=form)
+                           comments=thread.get_comments())
 
 
 @blueprint.route('/comment/post', methods=['POST'])
 def post_comment():
+    # import pdb;pdb.set_trace()
+    if 'logged_in' not in session:
+        return jsonify({"response": "You need to be log in to comment"})
+    else:
+        user = User.query.filter_by(username=session['username']).first()
+
+    if user is None:
+        return jsonify({"response":"Invalid user given"})
+
+    if request.form['content']:
+        comment_content=request.form['content']
+    else:
+        return jsonify({"response": "No comment content found"})
+
+    parent_id=None if request.form['parent_id']=="root" else request.form['parent_id']
+
     try:
         thread_id = int(request.form['thread_id'])
         thread = Submission.query.filter_by(id=thread_id).first()
         if thread is None:
-            raise ValueError
+            return jsonify({"response": "Error posting comment: thread not found"})
     except:
-        return jsonify({"response": "Error while posting comment"})
-    form = CommentForm(request.form, csrf_enabled=False)
-    if form.validate_on_submit():
-        if 'logged_in' not in session:
-            return jsonify({"response": 'You need to be logged in to post comments'})
-        else:
-            new_comment = Comment(thread_id=thread_id,
-                                  author=session['username'],
-                                  content=form.content.data)
-            try:
-                thread.comment_count += 1
-                db.session.add(new_comment)
-                db.session.commit()
-                form.content.data = ""
-            except:
-                return jsonify({"response": "Error encountered while trying to post comment"})
+        return jsonify({"response": "Error while posting comment: invalid thread id"})
+
+    if thread.post_comment(user, comment_content, parent_id):
+        return jsonify({"response": "Comment posted successfully"})
     else:
-        return jsonify({"response": "Comment must contain between 1 and 5000 characters"})
-    return jsonify({"response": "Comment posted successfully"})
+        return jsonify({"response": "Error posting comment"})
+
+
+
+    return jsonify({"response": "If you can read this something went wrong. No idea what."})
