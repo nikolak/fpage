@@ -1,24 +1,5 @@
 {% extends "_layouts/base.html" %}
 
-{% block js %}
-<script>
-    $(function() {
-      $('button#submit').bind('click', function() {
-        $.post('/comment/post', {
-          content: $('textarea#comment_body').val(),
-          thread_id: {{post.id}}
-        }, function(data) {
-          $("h6#counter").text(data.response);
-          $('textarea#comment_body').val("");
-        });
-        return false;
-      });
-    });
-
-
-</script>
-{% endblock %}
-
 {% block content %}
 <div class="body-content">
 
@@ -35,24 +16,20 @@
                     <div>
 
                         <small>
-                            <span id="{{post.id}}_ups">
-                                <a id="up_sub{{post.id}}"
-                                   class="btn btn-success btn-sm glyphicon glyphicon-thumbs-up postbtns"
-                                   onclick="javascript:vote('a#up_sub{{post.id}}', '{{post.id}}', 'up', 'a#down_sub{{post.id}}' );">
-                                    {{ post.ups
-                                    }}</a>
+                            <span id="{{post.id}}_up">
+                                <a id="upvote"
+                                   class="btn btn-success btn-sm glyphicon glyphicon-thumbs-up postbtns">
+                                    {{ post.ups}}</a>
                             </span>
 
 
-                            <span id="{{post.id}}_downs">
-                                <a id="down_sub{{post.id}}"
-                                   class="btn btn-danger btn-sm glyphicon glyphicon-thumbs-down postbtns"
-                                   onclick="javascript:vote('a#down_sub{{post.id}}', '{{post.id}}', 'down', 'a#up_sub{{post.id}}' );">
-                                    {{
-                                    post.downs }}</a>
+                            <span id="{{post.id}}_down">
+                                <a id="downvote"
+                                   class="btn btn-danger btn-sm glyphicon glyphicon-thumbs-down postbtns">
+                                    {{post.downs }}</a>
                             </span>
 
-                            <span id="comments_{{post.id}}">
+                            <span id="comments">
                              <a id="sub_{{post.id}}_num_comments"
                                 class="btn btn-default btn-sm glyphicon glyphicon-comment postbtns"
                                      > {{post.comment_count}}</a>
@@ -97,19 +74,18 @@
 {%- for comment in post.get_comments() recursive %}
 <div class="message-wrap col-lg-8">
     <div class="msg-wrap" style="margin-bottom: 15px;">
-        <div class="media msg">
+        <div class="media msg" id="{{comment.id}}">
             <a class="pull-left" href="#">
                 <img class="media-object" alt="64x64" style="width: 32px; height: 32px;"
                      src="../static/images/profile.png">
             </a>
 
-            <div class="media-body">
+            <div class="media-body" id="wrong one">
                 <small class="pull-right time"><i class="fa fa-clock-o"></i> 12:10am</small>
-
                 <h5 class="media-heading"><a href="/user/{{comment.author}}">{{ comment.author}}</a></h5>
                 <small class="col-lg-10">{{ comment.content }}"</small>
             </div>
-            <a onclick="javascript:show('reply_{{comment.id}}')">reply</a>
+            <a id="show_reply">reply</a>
         </div>
     </div>
 </div>
@@ -124,13 +100,14 @@
                         style="margin-bottom:10px;" id="{{comment.id}}_content"></textarea>
                         <h6 class="pull-right" id="status_{{comment.id}}">5000 characters remaining</h6>
                         <a class="btn btn-default" onclick="javascript:comment('{{comment.id}}','{{post.id}}')">Post New Comment</a>
-                        <a class="btn btn-default" onclick="javascript:hide('reply_{{comment.id}}')">Cancel</a>
+                        <a class="btn btn-default" id="hide_reply">Cancel</a>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 {%- if comment.get_comments() -%}
             {{ loop(comment.get_comments()) }}
 {%- endif %}
