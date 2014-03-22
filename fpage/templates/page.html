@@ -1,15 +1,10 @@
 {% extends "_layouts/base.html" %}
 {% block content %}
-
 <div class="body-content">
-
     <ul class="list-group">
         {% for post in posts %}
         <li class="list-group-item">
             <div class="row">
-                <!--
-                <div class="col-xs-2 col-md-1">
-                    <img src="http://placehold.it/80" class="img-circle img-responsive" alt=""/></div>-->
                 <div class="col-xs-10 col-md-11">
                     <div>
                         <h3>
@@ -18,42 +13,31 @@
                         </h3>
                     </div>
                     <div>
-
                         <small>
-                            <span id="{{post.id}}_ups">
-                                <a id="up_sub{{post.id}}"
-                                   class="btn btn-success btn-sm glyphicon glyphicon-thumbs-up postbtns"
-                                   onclick="javascript:vote('a#up_sub{{post.id}}', '{{post.id}}', 'up', 'a#down_sub{{post.id}}' );">
-                                    {{ post.ups
-                                    }}</a>
-                            </span>
-
-
-                            <span id="{{post.id}}_downs">
-                                <a id="down_sub{{post.id}}"
-                                   class="btn btn-danger btn-sm glyphicon glyphicon-thumbs-down postbtns"
-                                   onclick="javascript:vote('a#down_sub{{post.id}}', '{{post.id}}', 'down', 'a#up_sub{{post.id}}' );">
-                                    {{
-                                    post.downs }}</a>
-                            </span>
-
-                            <span id="comments_{{post.id}}">
-                             <a id="sub_{{post.id}}_num_comments"
-                                class="btn btn-default btn-sm glyphicon glyphicon-comment postbtns"
-                                href="/comments/{{post.id}}"> {{ post.comment_count }}</a>
-                            </span>
+                        <span id="{{post.id}}_up">
+                        <a id="upvote"
+                           class="btn btn-success btn-sm glyphicon glyphicon-thumbs-up postbtns">
+                            {{ post.ups}}</a>
+                        </span>
+                        <span id="{{post.id}}_down">
+                        <a id="downvote"
+                           class="btn btn-danger btn-sm glyphicon glyphicon-thumbs-down postbtns"></a>
+                        </span>
+                        <span id="comments_{{post.id}}">
+                        <a id="sub_{{post.id}}_num_comments"
+                           class="btn btn-default btn-sm glyphicon glyphicon-comment postbtns"
+                           href="/comments/{{post.id}}"> {{ post.comment_count }}</a>
+                        </span>
                         </small>
-
                         <span>
-                            <small style="position: relative; top: 0.25em;">
-                                <span class="glyphicon glyphicon-user"> </span>
-                                <a href="/user/{{post.author}}">
-                                    {{post.author}}
-                                </a>
-                                <span class="glyphicon glyphicon-time" style="padding-left: 10px;"> </span>
-                                <abbr class="timeago" title="{{post.timestamp}}">{{post.timestamp}}</abbr>
-
-                            </small>
+                        <small style="position: relative; top: 0.25em;">
+                            <span class="glyphicon glyphicon-user"> </span>
+                            <a href="/user/{{post.author}}">
+                                {{post.author}}
+                            </a>
+                            <span class="glyphicon glyphicon-time" style="padding-left: 10px;"> </span>
+                            <abbr class="timeago" title="{{post.timestamp}}">{{post.timestamp}}</abbr>
+                        </small>
                         </span>
                     </div>
                 </div>
@@ -61,7 +45,6 @@
         </li>
         {% endfor %}
     </ul>
-
     <ul class="pager">
         {% if page==1 %}
         <li class="disabled"><a>Previous</a></li>
@@ -70,15 +53,11 @@
         {%else%}
         <li><a href="/page/{{page-1}}">Previous</a></li>
         {%endif%}
-
         {% if posts|count <25 %}
         <li class="disabled"><a>Next</a></li>
         {%else%}
         <li><a href="/page/{{page+1}}">Next</a></li>
         {%endif%}
-
     </ul>
-
 </div>
-
 {% endblock %}
