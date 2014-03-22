@@ -13,6 +13,6 @@ common_js = Bundle(
     "libs/bootstrap3/js/bootstrap.min.js",
     "js/plugins.js",
     "js/script.js",
-    filters="jsmin",
+    # filters="jsmin", #painful to debug with it
     output="public/js/common.js"
 )
