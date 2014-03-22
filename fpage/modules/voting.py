@@ -14,54 +14,67 @@ blueprint = Blueprint('vote', __name__,
 @login_required
 def vote():
     user = session['username']
-    sub_id = request.form['postId']
+    sub_id=request.form['submission']
+    direction=request.form['direction']
+    response={"data":None}
+
+    if user is None:
+        return jsonify({"data":"Not logged in"})
+
     try:
-        vote = {"up": 1, "down": -1}[request.form['voteDir']]
-        changing_vote = False
-        if vote not in [-1, 1]:
-            raise ValueError
-        v = Vote.query.filter_by(user=user, submission_id=sub_id).first()
-        if v is None:
-            # first time voting
-            new_vote = Vote(user=user, submission_id=sub_id, vote_value=vote)
-            db.session.add(new_vote)
-        elif v.vote_value != vote:
-            # changing vote, we need bool to change value of other field
-            # in submission, to avoid duplicate votes
-            v.vote_value = vote
-            changing_vote = True
-
-        else:
-            return jsonify({
-                'new_value': request.form['cValue']})
-
-        submission = Submission.query.filter_by(id=sub_id).first()
-        if submission is None:
-            raise Exception
-        else:
-            if vote == 1:
-                submission.ups += 1
-                if changing_vote and submission.downs > 0:
-                    submission.downs -= 1
-            elif vote == -1:
-                submission.downs += 1
-                if changing_vote and submission.ups > 0:
-                    submission.ups -= 1
-            else:
-                raise Exception
-        db.session.commit()
-
-        new_value = " " + str(int(request.form['cValue']) + 1)
-
-        if changing_vote:
-            other_value = " " + str(int(request.form['otherValue']) - 1)
-        else:
-            other_value = request.form['otherValue']
+        sub_id=int(sub_id)
     except:
-        return jsonify({
-            'new_value': request.form['cValue'],
-            'other_value': request.form['otherValue']})
+        return jsonify({"data":"Invalid sub id"})
 
-    return jsonify({
-        'new_value': new_value,
-        'other_value': other_value})
+    submission=Submission.query.filter_by(id=sub_id).first()
+
+    if submission is None:
+        return jsonify({"data":"Sub not found"})
+
+    if direction not in ['up', 'down']:
+        return jsonify({"data":"invalid vote direction"})
+
+    direction_value=1 if direction=="up" else -1
+
+    vote=Vote.query.filter_by(user=user, submission_id=sub_id).first()
+
+
+    if vote is None: # first time voting on this
+        new_vote=Vote(user=user, submission_id=sub_id, vote_value=direction_value)
+        db.session.add(new_vote)
+        if direction=="up":
+            submission.ups+=1
+        else:
+            submission.downs+=1
+        response = {"data": "upvoted" if direction == "up" else "downvoted"}
+
+    elif vote.vote_value==0: # re-upvoting/downvoting after removed vote
+        vote.vote_value=direction_value
+        if direction=="up":
+            submission.ups+=1
+        else:
+            submission.downs+=1
+        response={"data":"upvoted" if direction=="up" else "downvoted"}
+
+    elif vote.vote_value==direction_value: #canceling the vote
+        vote.vote_value=0
+        if direction=="up":
+            submission.ups-=1
+        else:
+            submission.downs-=1
+        response={"data":"{}_cancel".format(direction)}
+
+    elif vote.vote_value in [-1,1] and vote.vote_value!=direction_value: # opposite vote
+        if vote.vote_value==1: # changing from positive (upvote) to negative (downvote)
+            vote.vote_value=-1
+            response={"data":"up_to_down"}
+            submission.ups-=1
+            submission.downs+=1
+        else:
+            vote.vote_value=1
+            response={"data":"down_to_up"}
+            submission.ups+=1
+            submission.downs-=1
+
+    db.session.commit()
+    return jsonify(response)
