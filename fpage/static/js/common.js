@@ -228,18 +228,6 @@ if(!jQuery)throw new Error("Bootstrap requires jQuery");+function(a){"use strict
   document.createElement("time");
 }));
 
-    function vote(sourceId, postId, voteDir, otherId) {
-        $.post('/vote', {
-            cValue: $(sourceId).text(),
-            postId: postId,
-            voteDir: voteDir,
-            otherValue: $(otherId).text()
-        }).done(function(voted) {
-            $(sourceId).text(voted['new_value'])
-            $(otherId).text(voted['other_value'])
-        });
-    };
-
     $(function() {
         $('a#sign_in').bind('click', function() {
             $.post('/login/', {
@@ -258,16 +246,6 @@ if(!jQuery)throw new Error("Bootstrap requires jQuery");+function(a){"use strict
         $("abbr.timeago").timeago();
     });
 
-    function comment(comment_id, thread_id) {
-        $.post('/comment/post', {
-            parent_id: comment_id,
-            content: $("textarea#" + comment_id + "_content").val(),
-            thread_id: thread_id
-        }).done(function(data) {
-            $("h6#status_" + comment_id).text(data.response)
-        });
-    };
-
     $(document).ready(function() {
         $(document).on('click', 'a#show_reply', function() {
             reply_id = $(this).parent().attr('id');
@@ -278,7 +256,7 @@ if(!jQuery)throw new Error("Bootstrap requires jQuery");+function(a){"use strict
     $(document).ready(function() {
         $(document).on('click', 'a#hide_reply', function() {
             reply_id = $(this).closest('div.container').attr('id');
-            var obj=document.getElementById(reply_id).style.display = "none";
+            var obj = document.getElementById(reply_id).style.display = "none";
         });
     });
 
@@ -346,4 +324,34 @@ if(!jQuery)throw new Error("Bootstrap requires jQuery");+function(a){"use strict
 
             });
         })
+    });
+
+
+    $(document).ready(function() {
+        $(document).on('keyup', 'textarea.form-control', function() {
+            var max = 5000;
+            var len = $(this).val().length;
+            var char_counter = $(this).parent().find('h6#char_counter')
+            if (len >= max) {
+                char_counter.text(' you have reached the limit');
+            } else {
+                var char = max - len;
+                char_counter.text(char + ' characters left');
+            }
+        });
+    });
+
+
+    $(document).ready(function() {
+        $(document).on('click', 'a#submit_comment', function() {
+            var c_object = $(this).parent().find('textarea.form-control');
+            var status = $(this).parent().find('h6#char_counter')
+            $.post('/comment/post', {
+                thread_id: c_object.attr('id').split('_')[1],
+                parent_id: c_object.attr('id').split('_')[2],
+                content: c_object.val(),
+            }).done(function(data) {
+                status.text(data.response)
+            });
+        });
     });
