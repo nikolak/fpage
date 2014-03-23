@@ -35,7 +35,7 @@
                             <a href="/user/{{post.author}}">
                                 {{post.author}}</a>
                             <span class="glyphicon glyphicon-time" style="padding-left: 10px;"> </span>
-                            <abbr class="timeago" title="{{post.timestamp}}">{{post.timestamp}}</abbr>
+                            <abbr class="timeago" title="{{post.timestamp}}">{{post.get_timestamp()}}</abbr>
                         </small>
                         </span>
                     </div>
@@ -71,7 +71,9 @@
             </a>
 
             <div class="media-body" id="wrong one">
-                <small class="pull-right time"><i class="fa fa-clock-o"></i> 12:10am</small>
+                <small class="pull-right time"><i class="fa fa-clock-o"></i>
+                    <abbr class="timeago" title="{{comment.get_timestamp()}}">{{comment.get_timestamp()}}</abbr>
+                </small>
                 <h5 class="media-heading"><a href="/user/{{comment.author}}">{{ comment.author}}</a></h5>
                 <small class="col-lg-10">{{ comment.content }}</small>
             </div>

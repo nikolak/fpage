@@ -3,6 +3,7 @@
 from flask import Blueprint, render_template, session, request, jsonify
 
 from fpage.models import Submission, User
+import datetime
 
 NESTED_LIMIT=5
 
@@ -54,8 +55,8 @@ def post_comment():
             return jsonify({"response": "Error posting comment: thread not found"})
     except:
         return jsonify({"response": "Error while posting comment: invalid thread id"})
-
-    post_response=thread.post_comment(user, comment_content, NESTED_LIMIT, parent_id)
+    timestamp=datetime.datetime.now()
+    post_response=thread.post_comment(user, comment_content, NESTED_LIMIT, timestamp, parent_id)
     if post_response is True:
         return jsonify({"response": "Comment posted successfully"})
     elif post_response: # recieved text response
