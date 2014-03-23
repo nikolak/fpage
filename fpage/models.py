@@ -65,6 +65,7 @@ class Submission(db.Model):
             comment=Comment(self.id, author.username, content, timestamp, parent)
         else:
             comment=Comment(self.id, author.username, content, timestamp)
+        self.comment_count+=1
         db.session.add(comment)
         db.session.commit()
         return True
