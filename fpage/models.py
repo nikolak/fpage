@@ -48,12 +48,15 @@ class Submission(db.Model):
     comments=db.relationship('Comment', backref='thread', lazy='dynamic')
 
 
-    def post_comment(self, author, content, parent_id=None):
+    def post_comment(self, author, content,nested_limit, parent_id=None):
         if parent_id:
             if parent_id.isdigit():
                 parent=Comment.query.filter_by(id=int(parent_id)).first()
                 if parent is None:
                     return False
+
+                if parent.level>=nested_limit:
+                    return "max depth exceeded"
             else:
                 return False
 

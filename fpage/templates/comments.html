@@ -75,10 +75,13 @@
                 <h5 class="media-heading"><a href="/user/{{comment.author}}">{{ comment.author}}</a></h5>
                 <small class="col-lg-10">{{ comment.content }}</small>
             </div>
+            {% if comment.level < n_limit %}
             <a id="show_reply">reply</a>
+            {% endif %}
         </div>
     </div>
 </div>
+{% if comment.level < n_limit %}
 <div class="container" id="reply_{{comment.id}}" style="display:none; margin-left: {{comment.get_indent()}}">
     <div class="row">
         <div class="col-sm-4 col-md-6">
@@ -97,6 +100,7 @@
         </div>
     </div>
 </div>
+{% endif %}
 {%- if comment.get_comments() -%}
 {{ loop(comment.get_comments()) }}
 {%- endif %}

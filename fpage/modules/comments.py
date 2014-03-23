@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from flask import Blueprint, flash, render_template, session, request, jsonify
+from flask import Blueprint, render_template, session, request, jsonify
 
-from fpage.models import Submission, Comment, db, User
-from fpage.forms import CommentForm
-from fpage.utils import flash_errors
+from fpage.models import Submission, User
+
+NESTED_LIMIT=5
 
 
 blueprint = Blueprint('comments', __name__,
@@ -22,10 +22,10 @@ def comments(thread_id):
     except ValueError:
         return render_template("404.html")
 
-    # import pdb;pdb.set_trace()
     return render_template("comments.html",
                            post=thread,
-                           comments=thread.get_comments())
+                           comments=thread.get_comments(),
+                           n_limit=NESTED_LIMIT)
 
 
 @blueprint.route('/comment/post', methods=['POST'])
@@ -37,15 +37,15 @@ def post_comment():
         user = User.query.filter_by(username=session['username']).first()
 
     if user is None:
-        return jsonify({"response":"Invalid user given"})
+        return jsonify({"response": "Invalid user given"})
 
     if request.form['content']:
-        comment_content=request.form['content']
+        comment_content = request.form['content']
         print comment_content
     else:
         return jsonify({"response": "No comment content found"})
 
-    parent_id=None if request.form['parent_id']=="root" else request.form['parent_id']
+    parent_id = None if request.form['parent_id'] == "root" else request.form['parent_id']
 
     try:
         thread_id = int(request.form['thread_id'])
@@ -55,11 +55,12 @@ def post_comment():
     except:
         return jsonify({"response": "Error while posting comment: invalid thread id"})
 
-    if thread.post_comment(user, comment_content, parent_id):
+    post_response=thread.post_comment(user, comment_content, NESTED_LIMIT, parent_id)
+    if post_response is True:
         return jsonify({"response": "Comment posted successfully"})
+    elif post_response: # recieved text response
+        return jsonify({"response":post_response})
     else:
         return jsonify({"response": "Error posting comment"})
-
-
 
     return jsonify({"response": "If you can read this something went wrong. No idea what."})
