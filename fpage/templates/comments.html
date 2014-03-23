@@ -51,9 +51,9 @@
                 <div class="panel-body">
                     <form accept-charset="UTF-8">
                         <textarea class="form-control" placeholder="Type in your comment" rows="3"
-                                  style="margin-bottom:10px;" id="root_content"></textarea>
-                        <h6 class="pull-right" id="status_root">5000 characters remaining</h6>
-                        <a class="btn btn-default" onclick="javascript:comment('root','{{post.id}}')">Post New
+                                  style="margin-bottom:10px;" id="reply_{{post.id}}_root"></textarea>
+                        <h6 class="pull-right" id="char_counter">5000 characters left</h6>
+                        <a class="btn btn-default" id="submit_comment">Post New
                             Comment</a>
                     </form>
                 </div>
@@ -91,9 +91,9 @@
                 <div class="panel-body">
                     <form accept-charset="UTF-8">
                         <textarea class="form-control" placeholder="Type in your comment" rows="3"
-                                  style="margin-bottom:10px;" id="{{comment.id}}_content"></textarea>
-                        <h6 class="pull-right" id="status_{{comment.id}}">5000 characters remaining</h6>
-                        <a class="btn btn-default" onclick="javascript:comment('{{comment.id}}','{{post.id}}')">Post New
+                                  style="margin-bottom:10px;" id="reply_{{post.id}}_{{comment.id}}"></textarea>
+                        <h6 class="pull-right" id="char_counter">5000 characters left</h6>
+                        <a class="btn btn-default" id="submit_comment">Post New
                             Comment</a>
                         <a class="btn btn-default" id="hide_reply">Cancel</a>
                     </form>
