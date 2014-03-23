@@ -21,7 +21,9 @@
                         </span>
                         <span id="{{post.id}}_down">
                         <a id="downvote"
-                           class="btn btn-danger btn-sm glyphicon glyphicon-thumbs-down postbtns"></a>
+                           class="btn btn-danger btn-sm glyphicon glyphicon-thumbs-down postbtns">
+                            {{ post.downs }}
+                           </a>
                         </span>
                         <span id="comments_{{post.id}}">
                         <a id="sub_{{post.id}}_num_comments"
