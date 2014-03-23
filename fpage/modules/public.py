@@ -34,7 +34,6 @@ def login():
     if request.method == 'POST':
         u = User.query.filter_by(username=request.form['username']).first()
         if u is None or not u.check_password(request.form['password']):
-            error = 'Invalid username or password.'
             return jsonify({"response": "error"})
         else:
             session['logged_in'] = True
