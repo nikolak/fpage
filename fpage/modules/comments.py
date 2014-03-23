@@ -31,7 +31,6 @@ def comments(thread_id):
 
 @blueprint.route('/comment/post', methods=['POST'])
 def post_comment():
-    # import pdb;pdb.set_trace()
     if 'logged_in' not in session:
         return jsonify({"response": "You need to be log in to comment"})
     else:
