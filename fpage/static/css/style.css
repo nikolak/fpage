@@ -113,3 +113,5 @@ h3 {
 .postbtns{
     border: 0px solid transparent;
 }
+
+a:visited {color: inherit;}  /* visited link */
