@@ -41,6 +41,7 @@ def post_comment():
 
     if request.form['content']:
         comment_content=request.form['content']
+        print comment_content
     else:
         return jsonify({"response": "No comment content found"})
 

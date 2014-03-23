@@ -271,14 +271,14 @@ if(!jQuery)throw new Error("Bootstrap requires jQuery");+function(a){"use strict
     $(document).ready(function() {
         $(document).on('click', 'a#show_reply', function() {
             reply_id = $(this).parent().attr('id');
-            document.getElementById("reply_" + reply_id).removeAttribute("style")
+            document.getElementById("reply_" + reply_id).style.removeProperty("display")
         });
     });
 
     $(document).ready(function() {
         $(document).on('click', 'a#hide_reply', function() {
             reply_id = $(this).closest('div.container').attr('id');
-            document.getElementById(reply_id).style.display = "none";
+            var obj=document.getElementById(reply_id).style.display = "none";
         });
     });
 

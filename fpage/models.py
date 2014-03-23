@@ -50,8 +50,14 @@ class Submission(db.Model):
 
     def post_comment(self, author, content, parent_id=None):
         if parent_id:
-            #todo: check if parent exists
-            comment=Comment(self.id, author.username, content, int(parent_id))
+            if parent_id.isdigit():
+                parent=Comment.query.filter_by(id=int(parent_id)).first()
+                if parent is None:
+                    return False
+            else:
+                return False
+
+            comment=Comment(self.id, author.username, content, parent)
         else:
             comment=Comment(self.id, author.username, content)
         db.session.add(comment)
@@ -59,7 +65,7 @@ class Submission(db.Model):
         return True
 
     def get_comments(self):
-        return self.comments.filter_by(is_root=True).all()
+        return self.comments.filter_by(level=0).all()
 
     def __repr__(self):
         return '<Submission {id} "{title} >"'.format(id=self.id, title=self.title)
@@ -89,17 +95,24 @@ class Comment(db.Model):
     parent_id = db.Column(db.Integer, db.ForeignKey('user_comments.id'))
     children=db.relationship('Comment', backref=db.backref('parent',
                                             remote_side=[id]), lazy='dynamic')
-    is_root=db.Column(db.Boolean)
+    level=db.Column(db.Integer, default=0)
 
-    def __init__(self, thread_id, author, content, parent_id=None):
+    def __init__(self, thread_id, author, content, parent=None):
         self.thread_id = thread_id
         self.author = author
         self.content = content
-        self.parent_id = parent_id
-        self.is_root=parent_id is None
+        if parent is not None:
+            self.parent_id = parent.id
+            self.level=parent.level+1
+        else:
+            self.parent_id=None
+            self.level=0
 
     def get_comments(self):
         return self.children.all()
+
+    def get_indent(self):
+            return "{}em".format(self.level*3)
 
     def __repr__(self):
         return "<Comment {} >".format(self.id)
