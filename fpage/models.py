@@ -7,6 +7,8 @@ from passlib.apps import custom_app_context as pwd_context
 
 from flask.ext.sqlalchemy import SQLAlchemy
 
+import datetime
+
 
 db = SQLAlchemy()
 
@@ -42,13 +44,13 @@ class Submission(db.Model):
     ups = db.Column(db.Integer, default=1)
     downs = db.Column(db.Integer, default=0)
     # self_text=db.Column(db.String(5000), default=None)
-    timestamp = db.Column(db.String, nullable=False) #todo: change to sec since epoch and make a func that'll give proper format to js
+    timestamp = db.Column(db.DateTime, nullable=False)
     author = db.Column(db.String, nullable=False)
     comment_count = db.Column(db.Integer, default=0)
     comments=db.relationship('Comment', backref='thread', lazy='dynamic')
 
 
-    def post_comment(self, author, content,nested_limit, parent_id=None):
+    def post_comment(self, author, content,nested_limit, timestamp, parent_id=None):
         if parent_id:
             if parent_id.isdigit():
                 parent=Comment.query.filter_by(id=int(parent_id)).first()
@@ -60,15 +62,19 @@ class Submission(db.Model):
             else:
                 return False
 
-            comment=Comment(self.id, author.username, content, parent)
+            comment=Comment(self.id, author.username, content, timestamp, parent)
         else:
-            comment=Comment(self.id, author.username, content)
+            comment=Comment(self.id, author.username, content, timestamp)
         db.session.add(comment)
         db.session.commit()
         return True
 
     def get_comments(self):
         return self.comments.filter_by(level=0).all()
+
+
+    def get_timestamp(self):
+        return self.timestamp.isoformat()
 
     def __repr__(self):
         return '<Submission {id} "{title} >"'.format(id=self.id, title=self.title)
@@ -98,12 +104,14 @@ class Comment(db.Model):
     parent_id = db.Column(db.Integer, db.ForeignKey('user_comments.id'))
     children=db.relationship('Comment', backref=db.backref('parent',
                                             remote_side=[id]), lazy='dynamic')
+    timestamp=db.Column(db.DateTime, nullable=False)
     level=db.Column(db.Integer, default=0)
 
-    def __init__(self, thread_id, author, content, parent=None):
+    def __init__(self, thread_id, author, content, timestamp, parent=None):
         self.thread_id = thread_id
         self.author = author
         self.content = content
+        self.timestamp=timestamp
         if parent is not None:
             self.parent_id = parent.id
             self.level=parent.level+1
@@ -116,6 +124,9 @@ class Comment(db.Model):
 
     def get_indent(self):
             return "{}em".format(self.level*3)
+
+    def get_timestamp(self):
+        return self.timestamp.isoformat()
 
     def __repr__(self):
         return "<Comment {} >".format(self.id)

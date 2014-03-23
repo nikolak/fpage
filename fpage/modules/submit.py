@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from datetime import datetime
+import datetime
 
 from flask import Blueprint, render_template, request, flash, session
 
@@ -27,7 +27,7 @@ def submit():
         else:
             new_submission = Submission(title=form.title.data,
                                         url=form.url.data,
-                                        timestamp=datetime.now().isoformat(),
+                                        timestamp=datetime.datetime.now(),
                                         author=user.username)
             try:
                 db.session.add(new_submission)
