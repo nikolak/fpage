@@ -244,7 +244,7 @@ $(document).ready(function() {
         });
     });
 
-
+    // Timeago library to display comment/post age
     $("abbr.timeago").timeago();
 
     // Show comment reply object/box
@@ -270,23 +270,7 @@ $(document).ready(function() {
             direction: dir_id[1],
             submission: dir_id[0],
         }).done(function(response) {
-            if (response.data == "upvoted") {
-                upvotes.text(' ' + (c_ups + 1));
-            } else if (response.data == "downvoted") {
-                downvotes.text(' ' + (c_downs + 1));
-            } else if (response.data == "up_cancel") {
-                upvotes.text(' ' + (c_ups - 1));
-            } else if (response.data == "down_cancel") {
-                downvotes.text(' ' + (c_downs - 1));
-            } else if (response.data == "down_to_up") {
-                downvotes.text(' ' + (c_downs - 1));
-                upvotes.text(' ' + (c_ups + 1));
-            } else if (response.data == "up_to_down") {
-                upvotes.text(' ' + (c_ups - 1));
-                downvotes.text(' ' + (c_downs + 1));
-            } else {
-                alert(response.data);
-            }
+            vote_response(response, c_ups, c_downs, upvotes, downvotes);
         });
     });
 
@@ -302,26 +286,29 @@ $(document).ready(function() {
             direction: dir_id[1],
             submission: dir_id[0],
         }).done(function(response) {
-            if (response.data == "upvoted") {
-                upvotes.text(' ' + (c_ups + 1));
-            } else if (response.data == "downvoted") {
-                downvotes.text(' ' + (c_downs + 1));
-            } else if (response.data == "up_cancel") {
-                upvotes.text(' ' + (c_ups - 1));
-            } else if (response.data == "down_cancel") {
-                downvotes.text(' ' + (c_downs - 1));
-            } else if (response.data == "down_to_up") {
-                downvotes.text(' ' + (c_downs - 1));
-                upvotes.text(' ' + (c_ups + 1));
-            } else if (response.data == "up_to_down") {
-                upvotes.text(' ' + (c_ups - 1));
-                downvotes.text(' ' + (c_downs + 1));
-            } else {
-                alert(response.data);
-            }
-
+            vote_response(response, c_ups, c_downs, upvotes, downvotes);
         });
     });
+
+    // Function to update data in case of upvote/downvote
+
+    function vote_response(response, c_ups, c_downs, upvotes, downvotes) {
+        if (response.data == "upvoted") {
+            upvotes.text(' ' + (c_ups + 1));
+        } else if (response.data == "downvoted") {
+            downvotes.text(' ' + (c_downs + 1));
+        } else if (response.data == "up_cancel") {
+            upvotes.text(' ' + (c_ups - 1));
+        } else if (response.data == "down_cancel") {
+            downvotes.text(' ' + (c_downs - 1));
+        } else if (response.data == "down_to_up") {
+            downvotes.text(' ' + (c_downs - 1));
+            upvotes.text(' ' + (c_ups + 1));
+        } else if (response.data == "up_to_down") {
+            upvotes.text(' ' + (c_ups - 1));
+            downvotes.text(' ' + (c_downs + 1));
+        }
+    };
 
     // Update counter to reflect number of characters left for the comment
     $(document).on('keyup', 'textarea.form-control', function() {
