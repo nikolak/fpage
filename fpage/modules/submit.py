@@ -2,7 +2,7 @@
 
 import datetime
 
-from flask import Blueprint, render_template, request, flash, session
+from flask import Blueprint, render_template, request, flash, session, redirect
 
 from fpage.utils import login_required
 from fpage.models import db, Submission, User
@@ -32,7 +32,7 @@ def submit():
             try:
                 db.session.add(new_submission)
                 db.session.commit()
-                flash("Successfully created new thread", 'success')
+                return redirect('/comments/{}'.format(new_submission.id))
             except:
                 flash("Error encountered while trying to post submission", 'warning')
     else:
