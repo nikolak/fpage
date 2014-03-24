@@ -2,7 +2,7 @@
 from flask.ext.assets import Bundle
 
 common_css = Bundle(
-    "libs/bootstrap3/css/bootstrap.min.css",
+    "libs/bootstrap3/css/bootstrap.css",
     "css/style.css",
     filters="cssmin",
     output="public/css/common.css"

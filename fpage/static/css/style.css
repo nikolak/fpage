@@ -99,7 +99,7 @@ footer .footer-nav {
 .ui-group-buttons:after{content:".";display:block;height:0.25em;clear:both;visibility:hidden}
 .ui-group-buttons .btn{float:left;border-radius:0}
 .ui-group-buttons .btn:first-child{margin-left:0;border-top-left-radius:.25em;border-bottom-left-radius:.25em;padding-right:15px}
-.ui-group-buttons .btn:last-child{border-top-right-radius:.25em;border-bottom-right-radius:.25em;padding-left:15px}
+.ui-group-buttons .btn:last-child{border-top-right-radius:0em;border-bottom-right-radius:0em;padding-left:15px}
 
 h3 {
     margin-top: 0px;
