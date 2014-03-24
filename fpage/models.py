@@ -81,20 +81,43 @@ class Submission(db.Model):
         return '<Submission {id} "{title} >"'.format(id=self.id, title=self.title)
 
 
-class Vote(db.Model):
-    __tablename__ = 'user_votes'
+class ThreadVotes(db.Model):
+    __tablename__ = 'thread_votes'
 
     id = db.Column(db.Integer, primary_key=True)
-    submission_id = db.Column(db.Integer, nullable=False)
-    user = db.Column(db.String, nullable=False)
+    thread_id = db.Column(db.Integer, db.ForeignKey('submissions.id'))
+    user = db.Column(db.Integer, db.ForeignKey('user.id'))
     vote_value = db.Column(db.Integer)
 
+    def __init__(self, user, thread, value):
+        self.user = user.id
+        self.thread_id = thread.id
+        self.vote_value = value
+
     def __repr__(self):
-        return "<Vote {vote_id} by {vote_user}>".format(vote_id=self.id, vote_user=self.user)
+        return "<Thread Vote {vote_id} by user id {vote_user}>".format(vote_id=self.id,
+                                                                       vote_user=self.user)
+
+class CommentVotes(db.Model):
+    __tablename__ = 'comment_votes'
+
+    id = db.Column(db.Integer, primary_key=True)
+    comment_id = db.Column(db.Integer, db.ForeignKey('comments.id'))
+    user = db.Column(db.Integer, db.ForeignKey('user.id'))
+    vote_value = db.Column(db.Integer)
+
+    def __init__(self, user, comment, value):
+        self.user=user.id
+        self.comment_id=comment.id
+        self.vote_value=value
+
+    def __repr__(self):
+        return "<Comment Vote {vote_id} by user id:{vote_user}>".format(vote_id=self.id,
+                                                                        vote_user=self.user)
 
 
 class Comment(db.Model):
-    __tablename__ = 'user_comments'
+    __tablename__ = 'comments'
 
     id = db.Column(db.Integer, primary_key=True)
     thread_id = db.Column(db.Integer, db.ForeignKey('submissions.id'))
@@ -102,7 +125,7 @@ class Comment(db.Model):
     content = db.Column(db.String, nullable=False)
     ups = db.Column(db.Integer, default=1)
     downs = db.Column(db.Integer, default=0)
-    parent_id = db.Column(db.Integer, db.ForeignKey('user_comments.id'))
+    parent_id = db.Column(db.Integer, db.ForeignKey('comments.id'))
     children=db.relationship('Comment', backref=db.backref('parent',
                                             remote_side=[id]), lazy='dynamic')
     timestamp=db.Column(db.DateTime, nullable=False)
@@ -124,7 +147,7 @@ class Comment(db.Model):
         return self.children.all()
 
     def get_indent(self):
-            return "{}em".format(self.level*3)
+            return "{}em".format(self.level*4.25)
 
     def get_timestamp(self):
         return self.timestamp.isoformat()

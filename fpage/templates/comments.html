@@ -13,12 +13,12 @@
                     </div>
                     <div>
                         <small>
-                        <span id="{{post.id}}_up">
+                        <span id="{{post.id}}_up_submission">
                         <a id="upvote"
                            class="btn btn-success btn-sm glyphicon glyphicon-thumbs-up postbtns">
                             {{ post.ups}}</a>
                         </span>
-                        <span id="{{post.id}}_down">
+                        <span id="{{post.id}}_down_submission">
                         <a id="downvote"
                            class="btn btn-danger btn-sm glyphicon glyphicon-thumbs-down postbtns">
                             {{post.downs }}</a>
@@ -73,9 +73,27 @@
                 <h5 class="media-heading"><a href="/user/{{comment.author}}">{{ comment.author}}</a></h5>
                 <small class="col-lg-10">{{ comment.content }}</small>
             </div>
-            {% if comment.level < n_limit %}
-            <a id="show_reply">reply</a>
-            {% endif %}
+                    <div style="margin-top:0.5em;">
+                        <small style="margin-left: 5em;">
+                        <span id="{{comment.id}}_up_comment">
+                        <a id="upvote"
+                           class="btn btn-success btn-sm glyphicon glyphicon-thumbs-up postbtns">
+                            {{ comment.ups}}</a>
+                        </span>
+                        <span id="{{comment.id}}_down_comment">
+                        <a id="downvote"
+                           class="btn btn-danger btn-sm glyphicon glyphicon-thumbs-down postbtns">
+                            {{comment.downs }}</a>
+                        </span>
+                        {% if comment.level < n_limit %}
+                        <span id="{{comment.id}}">
+                        <a id="show_reply"
+                           class="btn btn-info btn-sm glyphicon glyphicon-pencil postbtns"
+                                > reply </a>
+                        </span>
+                        {% endif %}
+                        </small>
+                    </div>
         </div>
     </div>
 </div>

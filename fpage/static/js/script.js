@@ -31,14 +31,15 @@ $(document).ready(function() {
 
     // Upvote button click
     $(document).on('click', 'a#upvote', function() {
-        var dir_id = $(this).parent().attr('id').split('_');
+        var dir_id_type = $(this).parent().attr('id').split('_');
         var upvotes = $(this);
         var downvotes = $(this).parent().parent().find("a#downvote");
         var c_ups = parseInt(upvotes.text());
         var c_downs = parseInt(downvotes.text());
         $.post('/vote', {
-            direction: dir_id[1],
-            submission: dir_id[0],
+            direction: dir_id_type[1],
+            object_id: dir_id_type[0],
+            vote_type: dir_id_type[2]
         }).done(function(response) {
             vote_response(response, c_ups, c_downs, upvotes, downvotes);
         });
@@ -46,15 +47,16 @@ $(document).ready(function() {
 
     // Downvote button click
     $(document).on('click', 'a#downvote', function() {
-        var dir_id = $(this).parent().attr('id').split('_');
+        var dir_id_type = $(this).parent().attr('id').split('_');
         var downvotes = $(this);
         var upvotes = $(this).parent().parent().find("a#upvote");
         var c_ups = parseInt(upvotes.text());
         var c_downs = parseInt(downvotes.text());
 
         $.post('/vote', {
-            direction: dir_id[1],
-            submission: dir_id[0],
+            direction: dir_id_type[1],
+            object_id: dir_id_type[0],
+            vote_type: dir_id_type[2]
         }).done(function(response) {
             vote_response(response, c_ups, c_downs, upvotes, downvotes);
         });
