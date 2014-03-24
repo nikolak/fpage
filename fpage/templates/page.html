@@ -7,10 +7,10 @@
             <div class="row">
                 <div class="col-xs-10 col-md-11">
                     <div>
-                        <h3>
-                            <a href="{{post.url|safe}}">
-                                {{ post.title|safe }}</a>
-                        </h3>
+                        <h4>
+                            <a href="{{post.url}}">
+                                {{ post.title }}</a>
+                        </h4>
                     </div>
                     <div>
                         <small>
@@ -23,24 +23,19 @@
                         <a id="downvote"
                            class="btn btn-danger btn-sm glyphicon glyphicon-thumbs-down postbtns">
                             {{ post.downs }}
-                           </a>
+                        </a>
                         </span>
                         <span id="comments_{{post.id}}">
                         <a id="sub_{{post.id}}_num_comments"
                            class="btn btn-default btn-sm glyphicon glyphicon-comment postbtns"
                            href="/comments/{{post.id}}"> {{ post.comment_count }}</a>
                         </span>
-                        </small>
-                        <span>
-                        <small style="position: relative; top: 0.25em;">
-                            <span class="glyphicon glyphicon-user"> </span>
-                            <a href="/user/{{post.author}}">
-                                {{post.author}}
-                            </a>
-                            <span class="glyphicon glyphicon-time" style="padding-left: 10px;"> </span>
-                            <abbr class="timeago" title="{{post.timestamp}}">{{post.timestamp}}</abbr>
-                        </small>
+                            <span>
+                        <a href="/user/{{post.author}}"
+                           class="btn btn-default btn-sm glyphicon glyphicon-user postbtns"
+                                > {{post.author}}</a>
                         </span>
+                        </small>
                     </div>
                 </div>
             </div>
