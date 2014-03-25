@@ -124,6 +124,7 @@ word-break: break-all;
 -webkit-hyphens: auto;
    -moz-hyphens: auto;
         hyphens: auto;
+padding-left: 0px;
 }
 
 .list-group-item {
