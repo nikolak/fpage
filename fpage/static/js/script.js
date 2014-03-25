@@ -99,13 +99,16 @@ $(document).ready(function() {
     $(document).on('click', 'a#submit_comment', function() {
         var c_object = $(this).parent().find('textarea.form-control');
         var status = $(this).parent().find('h6#char_counter')
-        $.post('/comment/post', {
-            thread_id: c_object.attr('id').split('_')[1],
-            parent_id: c_object.attr('id').split('_')[2],
-            content: c_object.val(),
-        }).done(function(data) {
-            status.text(data.response)
-        });
+        if (c_object.val().length > 5000) {
+            status.text('More than 5000 characters')
+        } else {
+            $.post('/comment/post', {
+                thread_id: c_object.attr('id').split('_')[1],
+                parent_id: c_object.attr('id').split('_')[2],
+                content: c_object.val(),
+            }).done(function(data) {
+                status.text(data.response);
+            });
+        }
     });
-
 });

@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
+import datetime
+
 from flask import Blueprint, render_template, session, request, jsonify
 
 from fpage.models import Submission, User
-import datetime
 
 NESTED_LIMIT = 5
 
@@ -42,7 +43,12 @@ def post_comment():
         comment_content = request.form['content']
     else:
         return jsonify({"response": "No comment content found"})
-    
+
+    if len(comment_content) > 5000:
+        return jsonify({"response": "Comment over 5000 characters"})
+    elif len(comment_content) < 1:
+        return jsonify({"response": "No comment content"})
+
     parent_id = None if request.form['parent_id'] == "root" else request.form['parent_id']
 
     try:
