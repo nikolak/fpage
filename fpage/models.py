@@ -146,9 +146,6 @@ class Comment(db.Model):
     def get_comments(self):
         return self.children.all()
 
-    def get_indent(self):
-            return "{}em".format(self.level*4.25)
-
     def get_timestamp(self):
         return self.timestamp.isoformat()
 

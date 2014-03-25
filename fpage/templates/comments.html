@@ -59,7 +59,7 @@
 </div>
 {%- for comment in post.get_comments() recursive %}
 <div class="message-wrap col-lg-8">
-    <div class="msg-wrap" style="margin-bottom: 15px; margin-left: {{comment.get_indent()}}">
+    <div class="msg-wrap" style="margin-bottom: 15px; margin-left: {{comment.level * 2.5}}em">
         <div class="media msg" id="{{comment.id}}">
             <a class="pull-left" href="#">
                 <img class="media-object" alt="64x64" style="width: 32px; height: 32px;"
@@ -74,7 +74,7 @@
                 <small class="col-lg-10">{{ comment.content }}</small>
             </div>
                     <div style="margin-top:0.5em;">
-                        <small style="margin-left: 5em;">
+                        <small style="margin-left: 0em;">
                         <span id="{{comment.id}}_up_comment">
                         <a id="upvote"
                            class="btn btn-success btn-sm glyphicon glyphicon-thumbs-up postbtns">
@@ -98,7 +98,7 @@
     </div>
 </div>
 {% if comment.level < n_limit %}
-<div class="container" id="reply_{{comment.id}}" style="display:none; margin-left: {{comment.get_indent()}}">
+<div class="container" id="reply_{{comment.id}}" style="display:none; margin-left: {{comment.level * 2.5}}em">
     <div class="row">
         <div class="col-sm-4 col-md-6">
             <div class="panel panel-default">
@@ -107,8 +107,7 @@
                         <textarea class="form-control" placeholder="Type in your comment" rows="3"
                                   style="margin-bottom:10px;" id="reply_{{post.id}}_{{comment.id}}"></textarea>
                         <h6 class="pull-right" id="char_counter">5000 characters left</h6>
-                        <a class="btn btn-default" id="submit_comment">Post New
-                            Comment</a>
+                        <a class="btn btn-default" id="submit_comment">Post Reply</a>
                         <a class="btn btn-default" id="hide_reply">Cancel</a>
                     </form>
                 </div>
