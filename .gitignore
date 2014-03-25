@@ -53,3 +53,7 @@ env*
 
 # Database
 dev.db
+
+# Common assets
+fpage/static/css/common.css
+fpage/static/js/common.js
