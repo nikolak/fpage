@@ -1,16 +1,20 @@
 # -*- coding: utf-8 -*-
 import datetime
+
 from flask import Blueprint, render_template, flash, request, session
-from fpage.utils import login_required
 from werkzeug.utils import redirect
+
+from fpage.utils import login_required
 from fpage.extensions import db
 from fpage.submission.forms import SubmitForm
 from fpage.utils import flash_errors
 import fpage.user
-
 from .models import Submission
+
+
 blueprint = Blueprint("submission", __name__,
                       static_folder="../static")
+
 
 @blueprint.route("/", methods=['GET'])
 @blueprint.route("/page/<page_id>", methods=['GET'])
@@ -30,6 +34,8 @@ def page(page_id=1):
     #
     # http://www.evanmiller.org/how-not-to-sort-by-average-rating.html
     #
+
+
 @blueprint.route("/submit/", methods=["GET", "POST"])
 @login_required
 def submit():

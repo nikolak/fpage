@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 from flask import Blueprint, render_template
+
 import fpage.user
 
+
 blueprint = Blueprint("user", __name__, url_prefix='/user',
-                        static_folder="../static")
+                      static_folder="../static")
 
 
 @blueprint.route("/<username>", methods=['GET'])

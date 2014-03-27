@@ -2,13 +2,11 @@
 import datetime as dt
 
 from flask.ext.login import UserMixin
-
 from fpage.database import db, CRUDMixin
 from fpage.extensions import bcrypt
 
 
-class User(UserMixin, CRUDMixin,  db.Model):
-
+class User(UserMixin, CRUDMixin, db.Model):
     __tablename__ = 'users'
     username = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(80), unique=True, nullable=False)
@@ -20,7 +18,7 @@ class User(UserMixin, CRUDMixin,  db.Model):
     is_admin = db.Column(db.Boolean())
 
     def __init__(self, username=None, email=None, password=None,
-                first_name=None, last_name=None,
+                 first_name=None, last_name=None,
                  active=True, is_admin=False):
         self.username = username
         self.email = email

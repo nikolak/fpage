@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
-from flask import Blueprint, render_template, session, request, jsonify
-from fpage.utils import login_required
+from flask import Blueprint, session, request, jsonify
+
 import fpage.comment
 from fpage.extensions import db
 import fpage.user
 import fpage.submission
-from.models import CommentVotes,ThreadVotes
+from .models import CommentVotes, ThreadVotes
+
 
 blueprint = Blueprint("votes", __name__,
                       static_folder="../static")

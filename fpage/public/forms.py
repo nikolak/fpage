@@ -4,6 +4,7 @@ from wtforms.validators import DataRequired
 
 import fpage.user
 
+
 class LoginForm(Form):
     username = TextField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])

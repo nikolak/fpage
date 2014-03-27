@@ -2,9 +2,9 @@
 
 from fpage.database import db, CRUDMixin
 
+
 class Comment(CRUDMixin, db.Model):
     __tablename__ = 'comment'
-
 
     id = db.Column(db.Integer, primary_key=True)
     thread_id = db.Column(db.Integer, db.ForeignKey('submission.id'))

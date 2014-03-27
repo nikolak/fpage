@@ -3,8 +3,8 @@
 from fpage.database import db, CRUDMixin
 import fpage.comment.models
 
-class Submission(CRUDMixin, db.Model):
 
+class Submission(CRUDMixin, db.Model):
     __tablename__ = 'submission'
 
     id = db.Column(db.Integer, primary_key=True)

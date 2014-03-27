@@ -58,16 +58,16 @@
     </div>
 </div>
 {%- for comment in post.get_comments() recursive %}
-        <div id="{{comment.id}}"  style="margin-bottom: 15px; margin-left: {{comment.level * 1}}em">
-            <div class="media-body">
-                <small class="pull-right time"><i class="fa fa-clock-o"></i>
-                    <abbr class="timeago" title="{{comment.get_timestamp()}}">{{comment.get_timestamp()}}</abbr>
-                </small>
-                <h5 style="margin-left: 1em;"><a href="/user/{{comment.author}}">{{ comment.author}}</a></h5>
-                <small class="col-lg-10">{{ comment.content }}</small>
-            </div>
-                    <div style="margin-top:0.5em;">
-                        <small style="margin-left: 1.25em;">
+<div id="{{comment.id}}" style="margin-bottom: 15px; margin-left: {{comment.level * 1}}em">
+    <div class="media-body">
+        <small class="pull-right time"><i class="fa fa-clock-o"></i>
+            <abbr class="timeago" title="{{comment.get_timestamp()}}">{{comment.get_timestamp()}}</abbr>
+        </small>
+        <h5 style="margin-left: 1em;"><a href="/user/{{comment.author}}">{{ comment.author}}</a></h5>
+        <small class="col-lg-10">{{ comment.content }}</small>
+    </div>
+    <div style="margin-top:0.5em;">
+        <small style="margin-left: 1.25em;">
                         <span id="{{comment.id}}_up_comment">
                         <a id="upvote"
                            class="btn btn-success btn-sm glyphicon glyphicon-thumbs-up postbtns">
@@ -78,16 +78,16 @@
                            class="btn btn-danger btn-sm glyphicon glyphicon-thumbs-down postbtns">
                             {{comment.downs }}</a>
                         </span>
-                        {% if comment.level < n_limit %}
+            {% if comment.level < n_limit %}
                         <span id="{{comment.id}}">
                         <a id="show_reply"
                            class="btn btn-info btn-sm glyphicon glyphicon-pencil postbtns"
                                 > reply </a>
                         </span>
-                        {% endif %}
-                        </small>
-                    </div>
-        </div>
+            {% endif %}
+        </small>
+    </div>
+</div>
 {% if comment.level < n_limit %}
 <div class="container" id="reply_{{comment.id}}" style="display:none; margin-left: {{comment.level * 2.5}}em">
     <div class="row">

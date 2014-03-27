@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import datetime
+
 from flask import Blueprint, render_template, session, jsonify, request
+
 import fpage.submission
 import fpage.user
 
@@ -8,7 +10,8 @@ import fpage.user
 blueprint = Blueprint("Comment", __name__,
                       static_folder="../static")
 
-NESTED_LIMIT=5 #TODO: Move this in some config file or somethign
+NESTED_LIMIT = 5  #TODO: Move this in some config file or somethign
+
 
 @blueprint.route("/comments/<thread_id>", methods=['GET'])
 def comments(thread_id):
@@ -24,6 +27,7 @@ def comments(thread_id):
                            post=thread,
                            comments=thread.get_comments(),
                            n_limit=NESTED_LIMIT)
+
 
 @blueprint.route('/comment/post', methods=['POST'])
 def post_comment():
