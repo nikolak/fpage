@@ -5,11 +5,11 @@
 /* universal */
 
 html {
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 body {
-  padding-top: 0px;
+  padding-top: 60px;
 }
 
 section {
@@ -23,10 +23,6 @@ textarea {
 .container-narrow{
   margin: 0 auto;
   max-width: 700px;
-}
-
-.btn .btn-default{
-  margin-left: 6px;
 }
 
 /* Forms */
@@ -89,26 +85,15 @@ footer .footer-nav {
   list-style: none;
 }
 
-.nav > li > a {
-  padding-right: 25px;
-}
-
-/* Submission list*/
-
-.ui-group-buttons{display:inline-block;vertical-align:middle}
-.ui-group-buttons:after{content:".";display:block;height:0.25em;clear:both;visibility:hidden}
-.ui-group-buttons .btn{float:left;border-radius:0}
-.ui-group-buttons .btn:first-child{margin-left:0;border-top-left-radius:.25em;border-bottom-left-radius:.25em;padding-right:15px}
-.ui-group-buttons .btn:last-child{border-top-right-radius:0em;border-bottom-right-radius:0em;padding-left:15px}
-
-h3 {
-    margin-top: 0px;
-    margin-bottom: 2px;
+* {
+  -webkit-border-radius: 0 !important;
+     -moz-border-radius: 0 !important;
+          border-radius: 0 !important;
 }
 
 h4, h3 {
-margin-top: 5px;
-margin-bottom: 2.5px;
+margin-top: 0px;
+margin-bottom: 2px;
 word-break: break-word;
 word-break: break-all;
 -ms-word-break: break-all;
@@ -117,25 +102,6 @@ word-break: break-all;
         hyphens: auto;
 }
 
-.col-lg-10{
-word-break: break-word;
-word-break: break-all;
--ms-word-break: break-all;
--webkit-hyphens: auto;
-   -moz-hyphens: auto;
-        hyphens: auto;
-padding-left: 0px;
+.navbar-nav.navbar-right:last-child {
+    margin-right: 15px;
 }
-
-.list-group-item {
-padding: 5px 5px;}
-
-.col-md-1 {
-    padding-right: 0px;
-}
-
-.postbtns{
-    border: 0px solid transparent;
-}
-
-a:visited {color: inherit;}  /* visited link */

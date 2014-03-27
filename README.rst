@@ -1,8 +1,8 @@
 ===============================
-flaskPage
+fpage
 ===============================
 
-Social news (HN/reddit-like) site made with Python and flask
+A social news web app similar to reddit written in flask/python
 
 
 Quickstart
@@ -13,9 +13,17 @@ Quickstart
     git clone https://github.com/Nikola-K/fpage
     cd fpage
     pip install -r requirements/dev.txt
-    export FPAGE_ENV='dev'
-    python manage.py createdb
-    python manage.py runserver
+    python manage.py db init
+    python manage.py db migrate
+    python manage.py db upgrade
+    python manage.py server
+
+
+
+Deployment
+----------
+
+In your production environment, make sure the ``FPAGE_ENV`` environment variable is set to ``"prod"``.
 
 
 Shell
@@ -25,17 +33,30 @@ To open the interactive shell, run ::
 
     python manage.py shell
 
-By default, you will have access to ``app``, ``models``, and ``db``.
+By default, you will have access to ``app``, ``db``, and the ``User`` model.
 
-Development / Production Environments
--------------------------------------
 
-Configuration environements are handled through the FPAGE_ENV system environment variable.
+Running Tests
+-------------
 
-To switch to the development environment, set ::
+To run all tests, run ::
 
-    export FPAGE_ENV="dev"
+    python manage.py test
 
-To switch to the production environment, set ::
 
-    export FPAGE_ENV="prod"
+Migrations
+----------
+
+Whenever a database migration needs to be made. Run the following commmands:
+::
+
+    python manage.py db migrate
+
+This will generate a new migration script. Then run:
+::
+
+    python manage.py db upgrade
+
+To apply the migration.
+
+For a full migration command reference, run ``python manage.py db --help``.

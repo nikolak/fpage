@@ -1,3 +1,9 @@
+(function($, window) {
+
+
+
+}).call(this, jQuery, window);
+
 $(document).ready(function() {
 
     // Sign in navbar click

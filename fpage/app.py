@@ -1,16 +1,20 @@
 # -*- coding: utf-8 -*-
-from flask import Flask
-from webassets.loaders import PythonLoader
+'''The app module, containing the app factory function.'''
+from flask import Flask, render_template
+from flask_debugtoolbar import DebugToolbarExtension
 
-from flask.ext.assets import Environment
-from fpage import assets
-from fpage.models import db
+from fpage.settings import ProdConfig
+from fpage.assets import assets
+from fpage.extensions import (db, login_manager, migrate, cache)
+# from fpage.submission.models import Submission
+# from fpage.comment.models import Comment
+# from fpage.votes.models import CommentVotes,ThreadVotes
+# from fpage.user.models import User
+from fpage import public, user, comment, submission, votes
 
 
-assets_env = Environment()
 
-
-def create_app(config_object):
+def create_app(config_object=ProdConfig):
     '''An application factory, as explained here:
         http://flask.pocoo.org/docs/patterns/appfactories/
 
@@ -18,21 +22,34 @@ def create_app(config_object):
     '''
     app = Flask(__name__)
     app.config.from_object(config_object)
-    # Initialize SQLAlchemy
-    db.init_app(app)
-    # Register asset bundles
-    assets_env.init_app(app)
-    assets_loader = PythonLoader(assets)
-    for name, bundle in assets_loader.load_bundles().iteritems():
-        assets_env.register(name, bundle)
-        # Register blueprints
-    from fpage.modules import page, voting, submit, public, comments, user
-
-    app.register_blueprint(page.blueprint)
-    app.register_blueprint(voting.blueprint)
-    app.register_blueprint(submit.blueprint)
-    app.register_blueprint(public.blueprint)
-    app.register_blueprint(comments.blueprint)
-    app.register_blueprint(user.blueprint)
-
+    register_extensions(app)
+    register_blueprints(app)
+    register_errorhandlers(app)
     return app
+
+
+def register_extensions(app):
+    db.init_app(app)
+    login_manager.init_app(app)
+    assets.init_app(app)
+    # toolbar = DebugToolbarExtension(app)
+    cache.init_app(app)
+    migrate.init_app(app, db)
+    return None
+
+
+def register_blueprints(app):
+    app.register_blueprint(public.views.blueprint)
+    app.register_blueprint(user.views.blueprint)
+    app.register_blueprint(comment.views.blueprint)
+    app.register_blueprint(submission.views.blueprint)
+    app.register_blueprint(votes.views.blueprint)
+    return None
+
+
+def register_errorhandlers(app):
+    def render_error(error):
+        return render_template("{0}.html".format(error.code)), error.code
+    for errcode in [401, 404, 500]:
+        app.errorhandler(errcode)(render_error)
+    return None

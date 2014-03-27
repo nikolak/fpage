@@ -1,0 +1,114 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="body-content">
+    <ul class="list-group">
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col-xs-10 col-md-11">
+                    <div>
+                        <h3>
+                            <a href="{{post.url}}">
+                                {{ post.title }}</a>
+                        </h3>
+                    </div>
+                    <div>
+                        <small>
+                        <span id="{{post.id}}_up_submission">
+                        <a id="upvote"
+                           class="btn btn-success btn-sm glyphicon glyphicon-thumbs-up postbtns">
+                            {{ post.ups}}</a>
+                        </span>
+                        <span id="{{post.id}}_down_submission">
+                        <a id="downvote"
+                           class="btn btn-danger btn-sm glyphicon glyphicon-thumbs-down postbtns">
+                            {{post.downs }}</a>
+                        </span>
+                        <span id="comments">
+                        <a id="sub_{{post.id}}_num_comments"
+                           class="btn btn-default btn-sm glyphicon glyphicon-comment postbtns"
+                                > {{post.comment_count}}</a>
+                        </span>
+                        <span>
+                        <a href="/user/{{post.author}}"
+                           class="btn btn-default btn-sm glyphicon glyphicon-user postbtns"
+                                > {{post.author}}</a>
+                        </span>
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4 col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form accept-charset="UTF-8">
+                        <textarea class="form-control" placeholder="Type in your comment" rows="3"
+                                  style="margin-bottom:10px;" id="reply_{{post.id}}_root"></textarea>
+                        <h6 class="pull-right" id="char_counter">5000 characters left</h6>
+                        <a class="btn btn-default" id="submit_comment">Post New
+                            Comment</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{%- for comment in post.get_comments() recursive %}
+        <div id="{{comment.id}}"  style="margin-bottom: 15px; margin-left: {{comment.level * 1}}em">
+            <div class="media-body">
+                <small class="pull-right time"><i class="fa fa-clock-o"></i>
+                    <abbr class="timeago" title="{{comment.get_timestamp()}}">{{comment.get_timestamp()}}</abbr>
+                </small>
+                <h5 style="margin-left: 1em;"><a href="/user/{{comment.author}}">{{ comment.author}}</a></h5>
+                <small class="col-lg-10">{{ comment.content }}</small>
+            </div>
+                    <div style="margin-top:0.5em;">
+                        <small style="margin-left: 1.25em;">
+                        <span id="{{comment.id}}_up_comment">
+                        <a id="upvote"
+                           class="btn btn-success btn-sm glyphicon glyphicon-thumbs-up postbtns">
+                            {{ comment.ups}}</a>
+                        </span>
+                        <span id="{{comment.id}}_down_comment">
+                        <a id="downvote"
+                           class="btn btn-danger btn-sm glyphicon glyphicon-thumbs-down postbtns">
+                            {{comment.downs }}</a>
+                        </span>
+                        {% if comment.level < n_limit %}
+                        <span id="{{comment.id}}">
+                        <a id="show_reply"
+                           class="btn btn-info btn-sm glyphicon glyphicon-pencil postbtns"
+                                > reply </a>
+                        </span>
+                        {% endif %}
+                        </small>
+                    </div>
+        </div>
+{% if comment.level < n_limit %}
+<div class="container" id="reply_{{comment.id}}" style="display:none; margin-left: {{comment.level * 2.5}}em">
+    <div class="row">
+        <div class="col-sm-4 col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form accept-charset="UTF-8">
+                        <textarea class="form-control" placeholder="Type in your comment" rows="3"
+                                  style="margin-bottom:10px;" id="reply_{{post.id}}_{{comment.id}}"></textarea>
+                        <h6 class="pull-right" id="char_counter">5000 characters left</h6>
+                        <a class="btn btn-default" id="submit_comment">Post Reply</a>
+                        <a class="btn btn-default" id="hide_reply">Cancel</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{%- if comment.get_comments() -%}
+{{ loop(comment.get_comments()) }}
+{%- endif %}
+{% endfor %}
+{% endblock %}

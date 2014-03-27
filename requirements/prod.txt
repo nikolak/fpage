@@ -1,4 +1,4 @@
-# Everything that is needed in production
+# Everything needed in production
 
 # Flask
 Flask==0.10.1
@@ -10,6 +10,9 @@ itsdangerous==0.23
 # Database
 Flask-SQLAlchemy==1.0
 SQLAlchemy==0.8.3
+
+# Migrations
+Flask-Migrate>=1.0.0
 
 # Forms
 Flask-WTF==0.9.3
@@ -25,4 +28,8 @@ cssmin>=0.1.4
 jsmin>=2.0.4
 
 # Auth
-passlib>=1.6.1
+Flask-Login>=0.2.7
+Flask-Bcrypt>=0.5.2
+
+# Caching
+Flask-Cache>=0.12

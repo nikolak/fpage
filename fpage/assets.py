@@ -1,18 +1,23 @@
 # -*- coding: utf-8 -*-
-from flask.ext.assets import Bundle
+from flask.ext.assets import Bundle, Environment
 
-common_css = Bundle(
-    "libs/bootstrap3/css/bootstrap.css",
+css = Bundle(
+    "libs/bootstrap/dist/css/bootstrap.css",
     "css/style.css",
     filters="cssmin",
     output="public/css/common.css"
 )
 
-common_js = Bundle(
-    "libs/jquery2/jquery.js",
-    "libs/bootstrap3/js/bootstrap.min.js",
+js = Bundle(
+    "libs/jQuery/dist/jquery.js",
+    "libs/bootstrap/dist/js/bootstrap.js",
     "js/plugins.js",
     "js/script.js",
-    # filters="jsmin", #painful to debug with it
+    filters='jsmin',
     output="public/js/common.js"
 )
+
+assets = Environment()
+
+assets.register("js_all", js)
+assets.register("css_all", css)

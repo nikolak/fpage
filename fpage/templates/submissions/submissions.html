@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="body-content">
+    <ul class="list-group">
+        {% for post in posts %}
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col-xs-10 col-md-11">
+                    <div>
+                        <h4>
+                            <a href="{{post.url}}">
+                                {{ post.title }}</a>
+                        </h4>
+                    </div>
+                    <div>
+                        <small>
+                        <span id="{{post.id}}_up">
+                        <a id="upvote"
+                           class="btn btn-success btn-sm glyphicon glyphicon-thumbs-up postbtns">
+                            {{ post.ups}}</a>
+                        </span>
+                        <span id="{{post.id}}_down">
+                        <a id="downvote"
+                           class="btn btn-danger btn-sm glyphicon glyphicon-thumbs-down postbtns">
+                            {{ post.downs }}
+                        </a>
+                        </span>
+                        <span id="comments_{{post.id}}">
+                        <a id="sub_{{post.id}}_num_comments"
+                           class="btn btn-default btn-sm glyphicon glyphicon-comment postbtns"
+                           href="/comments/{{post.id}}"> {{ post.comment_count }}</a>
+                        </span>
+                            <span>
+                        <a href="/user/{{post.author}}"
+                           class="btn btn-default btn-sm glyphicon glyphicon-user postbtns"
+                                > {{post.author}}</a>
+                        </span>
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+    <ul class="pager">
+        {% if page==1 %}
+        <li class="disabled"><a>Previous</a></li>
+        {%elif page==2%}
+        <li><a href="/">Previous</a></li>
+        {%else%}
+        <li><a href="/page/{{page-1}}">Previous</a></li>
+        {%endif%}
+        {% if posts|count <25 %}
+        <li class="disabled"><a>Next</a></li>
+        {%else%}
+        <li><a href="/page/{{page+1}}">Next</a></li>
+        {%endif%}
+    </ul>
+</div>
+{% endblock %}

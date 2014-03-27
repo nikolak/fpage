@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 '''Helper utilities and decorators.'''
-from flask import session, flash, redirect, url_for
+from flask import flash, session, url_for
 from functools import wraps
+from werkzeug.utils import redirect
 
 
-def flash_errors(form):
+def flash_errors(form, category="warning"):
     '''Flash all errors for a form.'''
     for field, errors in form.errors.items():
         for error in errors:
-            flash("Error in the {0} field - {1}"
-                  .format(getattr(form, field).label.text, error), 'warning')
-
+            flash("{0} - {1}"
+                    .format(getattr(form, field).label.text, error), category)
 
 def login_required(test):
     '''Decorator that makes a view require authentication.'''
@@ -21,6 +21,6 @@ def login_required(test):
             return test(*args, **kwargs)
         else:
             flash('You need to log in first.', 'warning')
-            return redirect(url_for('public.home'))
+            return redirect(url_for('public.login'))
 
     return wrap
