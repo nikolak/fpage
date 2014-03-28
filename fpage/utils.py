@@ -23,6 +23,6 @@ def login_required(test):
             return test(*args, **kwargs)
         else:
             flash('You need to log in first.', 'warning')
-            return redirect(url_for('public.login'))
+            return redirect(url_for('submission.page'))
 
     return wrap

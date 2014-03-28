@@ -26,8 +26,12 @@
         </div>
     </div>
 </div>
-
-
-{{ user.username }}
+{% if session.admin and session.username!=user.username %}
+<span id="user_{{user.id}}">
+                            <a id="admin_remove"
+                               class="btn btn-default btn-sm postbtns">Delete user
+                            </a>
+                        </span>
+{% endif %}
 
 {% endblock %}

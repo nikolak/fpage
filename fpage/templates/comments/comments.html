@@ -85,6 +85,13 @@
                                 > reply </a>
                         </span>
             {% endif %}
+            {% if session.admin %}
+                        <span id="comment_{{comment.id}}">
+                            <a id="admin_remove"
+                               class="btn btn-default btn-sm postbtns">remove
+                            </a>
+                        </span>
+            {% endif %}
         </small>
     </div>
 </div>

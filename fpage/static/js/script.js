@@ -117,4 +117,17 @@ $(document).ready(function() {
             });
         }
     });
+
+    //Admin remove button
+    $(document).on('click', 'a#admin_remove', function() {
+        var type_id = $(this).parent().attr('id').split('_');
+        var result = $(this)
+
+        $.post('/admin/remove', {
+            object_type: type_id[0],
+            object_id: type_id[1],
+        }).done(function(response) {
+            result.text(response.data);
+        });
+    });
 });

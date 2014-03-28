@@ -35,6 +35,13 @@
                            class="btn btn-default btn-sm glyphicon glyphicon-user postbtns"
                                 > {{post.author}}</a>
                         </span>
+                            {% if session.admin %}
+                        <span id="submission_{{post.id}}">
+                            <a id="admin_remove"
+                               class="btn btn-default btn-sm postbtns">remove
+                            </a>
+                        </span>
+                            {% endif %}
                         </small>
                     </div>
                 </div>

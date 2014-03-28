@@ -6,7 +6,6 @@ from flask import (Blueprint, request, render_template, flash, url_for,
 from fpage.utils import login_required
 from fpage.extensions import login_manager
 from fpage.user.models import User
-from fpage.public.forms import LoginForm
 from fpage.user.forms import RegisterForm
 from fpage.utils import flash_errors
 
@@ -19,9 +18,8 @@ def load_user(id):
     return User.get_by_id(int(id))
 
 
-@blueprint.route("/login/", methods=['POST'])  #TODO: Add login page
+@blueprint.route("/login/", methods=['POST'])
 def login():
-    form = LoginForm(request.form)
     if request.method == 'POST':
         u = User.query.filter_by(username=request.form['username']).first()
         if u is None or not u.check_password(request.form['password']):
@@ -29,8 +27,9 @@ def login():
         else:
             session['logged_in'] = True
             session['username'] = u.username
+            if u.is_admin:
+                session['admin']=True
             return jsonify({"response": "Logged in"})
-            # return render_template("public/login.html", form=form)
 
 
 @blueprint.route('/logout/')
@@ -38,6 +37,8 @@ def login():
 def logout():
     session.pop('logged_in', None)
     session.pop('username', None)
+    if session.get('admin'):
+        session.pop('admin', None)
     flash('You are logged out.', 'info')
     return redirect(url_for('submission.page'))
     # logout_user()
@@ -62,5 +63,4 @@ def register():
 
 @blueprint.route("/about/")
 def about():
-    form = LoginForm(request.form)
-    return render_template("public/about.html", form=form)
+    return render_template("public/about.html")
