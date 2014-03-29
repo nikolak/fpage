@@ -105,3 +105,12 @@ word-break: break-all;
 .navbar-nav.navbar-right:last-child {
     margin-right: 15px;
 }
+
+.fa {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+}

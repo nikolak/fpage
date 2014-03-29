@@ -16,29 +16,29 @@
                         <small>
                         <span id="{{post.id}}_up_submission">
                         <a id="upvote"
-                           class="btn btn-success btn-sm glyphicon glyphicon-thumbs-up postbtns">
+                           class="btn btn-success btn-sm fa  fa-chevron-up">
                             {{ post.ups}}</a>
                         </span>
                         <span id="{{post.id}}_down_submission">
                         <a id="downvote"
-                           class="btn btn-danger btn-sm glyphicon glyphicon-thumbs-down postbtns">
+                           class="btn btn-danger btn-sm fa  fa-chevron-down">
                             {{ post.downs }}
                         </a>
                         </span>
                         <span id="comments_{{post.id}}">
                         <a id="sub_{{post.id}}_num_comments"
-                           class="btn btn-default btn-sm glyphicon glyphicon-comment postbtns"
+                           class="btn btn-default btn-sm fa fa-comments-o"
                            href="/comments/{{post.id}}"> {{ post.comment_count }}</a>
                         </span>
                             <span>
                         <a href="/user/{{post.author}}"
-                           class="btn btn-default btn-sm glyphicon glyphicon-user postbtns"
+                           class="btn btn-default btn-sm fa fa-user"
                                 > {{post.author}}</a>
                         </span>
                             {% if session.admin %}
                         <span id="submission_{{post.id}}">
                             <a id="admin_remove"
-                               class="btn btn-default btn-sm postbtns">remove
+                               class="btn btn-default btn-sm fa fa-ban"> remove
                             </a>
                         </span>
                             {% endif %}

@@ -25,6 +25,13 @@ Deployment
 
 In your production environment, make sure the ``FPAGE_ENV`` environment variable is set to ``"prod"``.
 
+Admin User
+----------
+
+Create your account and visit ``yourdomain.com/admin`` - if no admin exists current user will be assigned as admin.
+
+This can not be changed later other than accessing database directly and changing value.
+
 
 Shell
 -----
