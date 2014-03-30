@@ -16,6 +16,7 @@ class User(UserMixin, CRUDMixin, db.Model):
     last_name = db.Column(db.String(30), nullable=True)
     active = db.Column(db.Boolean())
     is_admin = db.Column(db.Boolean())
+    unread_count = db.Column(db.Integer, nullable=True)
 
     def __init__(self, username=None, email=None, password=None,
                  first_name=None, last_name=None,

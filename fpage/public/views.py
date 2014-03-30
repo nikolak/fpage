@@ -29,6 +29,7 @@ def login():
             session['username'] = u.username
             if u.is_admin:
                 session['admin']=True
+            session['unread']=u.unread_count
             return jsonify({"response": "Logged in"})
 
 
@@ -37,6 +38,7 @@ def login():
 def logout():
     session.pop('logged_in', None)
     session.pop('username', None)
+    session.pop('unread', None)
     if session.get('admin'):
         session.pop('admin', None)
     flash('You are logged out.', 'info')

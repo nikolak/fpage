@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% block content %}
+{% for message in messages %}
+<div id="{{message.id}}" style="margin-bottom: 15px;">
+    <div class="media-body">
+        <small class="pull-right time"><i class="fa fa-clock-o"></i>
+            <abbr class="timeago" title="{{message.iso_time}}">{{message.iso_time}}</abbr>
+        </small>
+        <small style="margin-left: 1em;">{{message.description}} from <a href="/user/{{message.sender}}">{{ message.sender}}</a>    </small>
+        <small>Thread:</small>
+        <small><a href="/{{message.thread_url}}">permalink</a></small>
+        <h5 class="col-lg-10">{{ message.content }}</h5>
+
+    </div>
+</div>
+
+{% endfor %}
+{% endblock %}

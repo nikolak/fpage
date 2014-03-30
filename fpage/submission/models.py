@@ -1,8 +1,10 @@
 # encoding: utf-8
+from flask import session
 
 from fpage.database import db, CRUDMixin
 import fpage.comment.models
-
+import fpage.user.models
+import fpage.message.models
 
 class Submission(CRUDMixin, db.Model):
     __tablename__ = 'submission'
@@ -30,9 +32,18 @@ class Submission(CRUDMixin, db.Model):
                 parent = fpage.comment.models.Comment.query.filter_by(id=int(parent_id)).first()
                 if parent is None:
                     return False
-
-                if parent.level >= nested_limit:
+                elif parent.level >= nested_limit:
                     return "max depth exceeded"
+                else:
+                    user=fpage.user.models.User.query.filter_by(username=parent.author).first()
+                    user.update(unread_count=0 if user.unread_count is None else user.unread_count+1)
+                    session['unread']=user.unread_count
+                    fpage.message.models.Message.create(sender=author.username,
+                                                        reciever=user.username,
+                                                        content=content,
+                                                        description="Comment reply",
+                                                        thread_url="comments/{}".format(self.id))
+
             else:
                 return False
 
