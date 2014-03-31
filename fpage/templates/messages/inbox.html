@@ -6,13 +6,26 @@
         <small class="pull-right time"><i class="fa fa-clock-o"></i>
             <abbr class="timeago" title="{{message.iso_time}}">{{message.iso_time}}</abbr>
         </small>
-        <small style="margin-left: 1em;">{{message.description}} from <a href="/user/{{message.sender}}">{{ message.sender}}</a>    </small>
+        <small style="margin-left: 1em;">{{message.description}} from <a href="/user/{{message.sender}}">{{
+            message.sender}}</a></small>
         <small>Thread:</small>
         <small><a href="/{{message.thread_url}}">permalink</a></small>
         <h5 class="col-lg-10">{{ message.content }}</h5>
-
     </div>
 </div>
-
 {% endfor %}
+<ul class="pager">
+    {% if page==1 %}
+    <li class="disabled"><a>Newer</a></li>
+    {%elif page==2%}
+    <li><a href="/">Newer</a></li>
+    {%else%}
+    <li><a href="/page/{{page-1}}">Newer</a></li>
+    {%endif%}
+    {% if posts|count <25 %}
+    <li class="disabled"><a>Older</a></li>
+    {%else%}
+    <li><a href="/page/{{page+1}}">Older</a></li>
+    {%endif%}
+</ul>
 {% endblock %}

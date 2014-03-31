@@ -13,8 +13,8 @@ class Message(CRUDMixin, db.Model):
     reciever = db.Column(db.String, nullable=False)
     content = db.Column(db.String, nullable=False)
     timestamp = db.Column(db.DateTime, nullable=False)
-    description =db.Column(db.String, nullable=False)
-    thread_url=db.Column(db.String)
+    description = db.Column(db.String, nullable=False)
+    thread_url = db.Column(db.String)
 
     def __init__(self, sender, reciever, content, description, thread_url):
         self.sender = sender
@@ -23,7 +23,7 @@ class Message(CRUDMixin, db.Model):
         self.timestamp = dt.datetime.now()
         self.description = description
         self.thread_url = thread_url
-        
+
 
     @property
     def iso_time(self):
