@@ -14,9 +14,9 @@ class Config(object):
 
 class ProdConfig(Config):
     '''Production configuration.'''
-    ENV = 'prod'
+    ENV = 'prod' # Use something like: import os;os.urandom(24)
     DEBUG = False
-    SQLALCHEMY_DATABASE_URI = 'postgresql://localhost/fpage'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://localhost/example'
     DEBUG_TB_ENABLED = False  # Disable Debug toolbar
 
 

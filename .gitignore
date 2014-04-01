@@ -44,7 +44,6 @@ docs/_build
 
 # Virtualenvs
 env
-env*
 
 # PyCharm/InteliJ IDE
 .idea

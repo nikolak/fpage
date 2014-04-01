@@ -13,7 +13,7 @@ js = Bundle(
     "libs/bootstrap/dist/js/bootstrap.js",
     "js/plugins.js",
     "js/script.js",
-    filters='jsmin',
+    # filters='jsmin', # fixme: Breaks js assets on prod env
     output="public/js/common.js"
 )
 
