@@ -1,0 +1,73 @@
+{% extends "layout.html" %}
+{% block content %}
+<ul class="nav nav-tabs">
+    <li><a href="/user/{{user.username}}">Profile</a></li>
+    <li class="active"><a href="/user/{{user.username}}/submissions">Submissions</a></li>
+    <li><a href="/user/{{user.username}}/comments">Comments</a></li>
+</ul>
+
+<div class="body-content">
+    <ul class="list-group">
+        {% for post in submissions %}
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col-xs-10 col-md-11">
+                    <div>
+                        <h4>
+                            <a href="{{post.url}}">
+                                {{ post.title }}</a>
+                        </h4>
+                    </div>
+                    <div>
+                        <small>
+                        <span id="{{post.id}}_up_submission">
+                        <a id="upvote"
+                           class="btn btn-success btn-sm fa  fa-chevron-up">
+                            {{ post.ups}}</a>
+                        </span>
+                        <span id="{{post.id}}_down_submission">
+                        <a id="downvote"
+                           class="btn btn-danger btn-sm fa  fa-chevron-down">
+                            {{ post.downs }}
+                        </a>
+                        </span>
+                        <span id="comments_{{post.id}}">
+                        <a id="sub_{{post.id}}_num_comments"
+                           class="btn btn-default btn-sm fa fa-comments-o"
+                           href="/comments/{{post.id}}"> {{ post.comment_count }}</a>
+                        </span>
+                            <span>
+                        <a href="/user/{{post.author}}"
+                           class="btn btn-default btn-sm fa fa-user"
+                                > {{post.author}}</a>
+                        </span>
+                            {% if session.admin %}
+                        <span id="submission_{{post.id}}">
+                            <a id="admin_remove"
+                               class="btn btn-default btn-sm fa fa-ban"> remove
+                            </a>
+                        </span>
+                            {% endif %}
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+      <ul class="pager">
+        {% if page==1 %}
+        <li class="disabled"><a>Newer</a></li>
+        {%elif page==2%}
+        <li><a href="/user/{{user.username}}/submissions">Newer</a></li>
+        {%else%}
+        <li><a href="/user/{{user.username}}/submissions/{{page-1}}">Newer</a></li>
+        {%endif%}
+        {% if posts|count <25 %}
+        <li class="disabled"><a>Older</a></li>
+        {%else%}
+        <li><a href="//user/{{user.username}}/submissions/{{page+1}}">Older</a></li>
+        {%endif%}
+    </ul>
+</div>
+{% endblock %}

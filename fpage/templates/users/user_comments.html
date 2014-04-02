@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+{% block content %}
+<ul class="nav nav-tabs">
+    <li><a href="/user/{{user.username}}">Profile</a></li>
+    <li><a href="/user/{{user.username}}/submissions">Submissions</a></li>
+    <li class="active"><a href="/user/{{user.username}}/comments">Comments</a></li>
+</ul>
+
+
+{% for comment in comments %}
+<div id="{{comment.id}}" style="margin-bottom: 15px; margin-left: {{comment.level * 1}}em">
+    <div class="media-body">
+        <small class="pull-right time"><i class="fa fa-clock-o"></i>
+            <abbr class="timeago" title="{{comment.get_timestamp()}}">{{comment.get_timestamp()}}</abbr>
+        </small>
+        <h5 style="margin-left: 1em;"><a href="/user/{{comment.author}}">{{ comment.author}}</a></h5>
+        <small class="col-lg-10">{{ comment.content }}</small>
+    </div>
+    <div style="margin-top:0.5em;">
+        <small style="margin-left: 1.25em;">
+                        <span id="{{comment.id}}_up_comment">
+                        <a id="upvote"
+                           class="btn btn-success btn-sm fa  fa-chevron-up">
+                            {{ comment.ups}}</a>
+                        </span>
+                        <span id="{{comment.id}}_down_comment">
+                        <a id="downvote"
+                           class="btn btn-danger btn-sm fa  fa-chevron-downs">
+                            {{comment.downs }}</a>
+                        </span>
+                        <span>
+                        <a id="permalink"
+                           class="btn btn-default btn-sm fa"
+                           href="/comments/{{comment.thread_id}}">
+                            Thread</a>
+                        </span>
+            {% if session.admin %}
+                        <span id="comment_{{comment.id}}">
+                            <a id="admin_remove"
+                               class="btn btn-default btn-sm fa fa-ban"> remove
+                            </a>
+                        </span>
+            {% endif %}
+        </small>
+    </div>
+     <ul class="pager">
+        {% if page==1 %}
+        <li class="disabled"><a>Newer</a></li>
+        {%elif page==2%}
+        <li><a href="/user/{{user.username}}/comments">Newer</a></li>
+        {%else%}
+        <li><a href="/user/{{user.username}}/comments/{{page-1}}">Newer</a></li>
+        {%endif%}
+        {% if posts|count <25 %}
+        <li class="disabled"><a>Older</a></li>
+        {%else%}
+        <li><a href="//user/{{user.username}}/comments/{{page+1}}">Older</a></li>
+        {%endif%}
+    </ul>
+</div>
+{% endfor %}
+{% endblock %}
