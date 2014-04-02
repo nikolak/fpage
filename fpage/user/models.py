@@ -38,6 +38,10 @@ class User(UserMixin, CRUDMixin, db.Model):
         return bcrypt.check_password_hash(self.password, password)
 
     @property
+    def iso_time(self):
+        return self.created_at.isoformat()
+
+    @property
     def full_name(self):
         return "{0} {1}".format(self.first_name, self.last_name)
 
