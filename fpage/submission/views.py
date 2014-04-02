@@ -46,15 +46,13 @@ def submit():
         if user is None:
             flash("Error getting user", 'warning')
         else:
-            new_submission = Submission(title=form.title.data,
+            new_submission = Submission.create(title=form.title.data,
                                         url=form.url.data,
                                         timestamp=datetime.datetime.now(),
                                         author=user.username)
-            try:
-                db.session.add(new_submission)
-                db.session.commit()
+            if new_submission:
                 return redirect('/comments/{}'.format(new_submission.id))
-            except:
+            else:
                 flash("Error encountered while trying to post submission", 'warning')
     else:
         flash_errors(form)
