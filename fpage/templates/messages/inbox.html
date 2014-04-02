@@ -20,12 +20,12 @@
     {%elif page==2%}
     <li><a href="/">Newer</a></li>
     {%else%}
-    <li><a href="/page/{{page-1}}">Newer</a></li>
+    <li><a href="/inbox/{{page-1}}">Newer</a></li>
     {%endif%}
     {% if posts|count <25 %}
     <li class="disabled"><a>Older</a></li>
     {%else%}
-    <li><a href="/page/{{page+1}}">Older</a></li>
+    <li><a href="/inbox/{{page+1}}">Older</a></li>
     {%endif%}
 </ul>
 {% endblock %}
